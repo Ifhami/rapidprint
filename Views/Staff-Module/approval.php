@@ -42,23 +42,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_students'])) 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Card Approval</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <style>
-        .table-responsive { overflow-x: auto; }
-        .verification-image { max-width: 100%; max-height: 150px; border: 1px solid #ddd; padding: 5px; object-fit: cover; }
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .verification-image {
+            max-width: 100%;
+            max-height: 150px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            object-fit: cover;
+        }
     </style>
 </head>
+
 <body>
 
-<?php include '../../public/nav/staffnav.php'; ?>
+    <?php include '../../public/nav/staffnav.php'; ?>
 
     <div class="container mt-5">
         <h2 class="mb-4 text-center">Student Card Approval</h2>
-        
+
         <form action="approval.php?page=<?php echo $page; ?>" method="POST">
             <div class="table-responsive">
                 <?php if ($result && $result->num_rows > 0): ?>
@@ -135,4 +146,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_students'])) 
         }
     </script>
 </body>
+
 </html>

@@ -125,7 +125,7 @@ $conn->close();
                     <?php if ($picture): ?>
                         <img src="data:image/jpeg;base64,<?php echo base64_encode($picture); ?>" alt="Profile Picture" class="profile-image mb-3">
                     <?php else: ?>
-                        <img src="../../public/Assets/default-profile.png" alt="Default Profile Picture" class="profile-image mb-3">
+                        <img src="https://www.shutterstock.com/image-vector/user-icon-trendy-flat-style-600nw-1697898655.jpg" alt="Default Profile Picture" class="profile-image mb-3">
                     <?php endif; ?>
                     <form action="user-profile.php" method="POST" enctype="multipart/form-data">
                         <input type="file" class="form-control mb-3" name="profile_picture" accept="image/*">

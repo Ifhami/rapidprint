@@ -1,5 +1,4 @@
 <?php
-
 // Check if the user has a role and set the homepage link accordingly
 if (isset($_SESSION['role'])) {
     switch ($_SESSION['role']) {
@@ -25,9 +24,17 @@ if (isset($_SESSION['role'])) {
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Account Registration</a>
+                <!-- Account Registration Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="accountRegistrationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Account Registration
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountRegistrationDropdown">
+                        <li><a class="dropdown-item" href="../../Views/Admin-Module/create-account.php">Create Account</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Admin-Module/manage-account.php">Manage User</a></li>
+                    </ul>
                 </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
                 </li>
@@ -37,6 +44,7 @@ if (isset($_SESSION['role'])) {
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
                 </li>
+                
                 <!-- User Dropdown -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item dropdown">
