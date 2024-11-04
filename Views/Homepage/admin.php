@@ -1,7 +1,7 @@
 <?php
 // Include the database connection file and start session
 include '../../public/includes/db_connect.php';
-include '../../public/includes/staff.php';
+include '../../public/includes/admin.php';
 include '../../public/includes/homepagename.php';
 
 ?>
@@ -72,7 +72,7 @@ include '../../public/includes/homepagename.php';
 
 <body>
     
-<?php include '../../public/nav/staffnav.php'; ?> <!-- Include navbar -->
+<?php include '../../public/nav/adminnav.php'; ?> <!-- Include navbar -->
 
     <!-- Hero Section -->
     <section class="hero-section">
