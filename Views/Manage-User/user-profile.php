@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Check user role from session
-$user_role = $_SESSION['role'] ?? null; // Get user role or set to null if not set
+$user_role = $_SESSION['role'] ?? null;
 
 // Fetch user information from the database
 $user_id = $_SESSION['user_id'];
@@ -99,14 +99,13 @@ $conn->close();
             object-fit: cover;
         }
         .card-custom {
-            background-color: #f8f9fa; /* Light shaded background */
+            background-color: #f8f9fa;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
             margin-bottom: 20px;
         }
         .upload-section { text-align: center; }
-        /* Custom styling for mobile-friendly layouts */
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             .btn { width: 100%; }
@@ -114,7 +113,7 @@ $conn->close();
     </style>
 </head>
 <body>
-    <?php include '../../public/includes/navLogic.php'; ?> <!-- Include navbar -->
+    <?php include '../../public/includes/navLogic.php'; ?>
 
     <div class="container mt-5">
         <div class="row g-4">
@@ -171,6 +170,9 @@ $conn->close();
                             <?php if ($verification_status === 'pending'): ?>
                                 <div class="alert alert-warning mt-3">Verification proof is pending approval.</div>
                                 <img src="../../public/Assets/pending.png" alt="Pending Approval" class="img-fluid" style="max-width: 150px;">
+                            <?php elseif ($verification_status === 'rejected'): ?>
+                                <div class="alert alert-danger mt-3">Your proof got rejected. Please reupload.</div>
+                                <img src="../../public/Assets/rejected.png" alt="Rejected" class="img-fluid" style="max-width: 150px;">
                             <?php elseif ($verification_status === 'completed' && $verification_proof): ?>
                                 <div class="mt-3">
                                     <p>Current Uploaded Matric Card:</p>

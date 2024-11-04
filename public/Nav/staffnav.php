@@ -26,7 +26,7 @@ if (isset($_SESSION['role'])) {
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Proof Approval</a>
+                    <a class="nav-link" href="../../Views/Staff-Module/approval.php">Proof Approval</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
