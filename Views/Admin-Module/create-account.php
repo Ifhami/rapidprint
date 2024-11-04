@@ -9,13 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['single_account'])) {
     $email = $conn->real_escape_string($_POST['email']);
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $role = $conn->real_escape_string($_POST['role']);
+    $gender = $conn->real_escape_string($_POST['gender']);
 
     // Set verification status based on role
     $verification_status = ($role === 'student') ? 'incomplete' : 'N/A';
 
-    $sql = "INSERT INTO user (fullname, email, upassword, role, verification_status) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO user (fullname, email, upassword, role, verification_status, gender) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $fullname, $email, $password, $role, $verification_status);
+    $stmt->bind_param("ssssss", $fullname, $email, $password, $role, $verification_status, $gender);
 
     if ($stmt->execute()) {
         echo "<script>alert('User account created successfully!'); window.location.href = 'create-account.php';</script>";
@@ -38,14 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['csv_file']) && $_FILE
     $errorCount = 0;
 
     while (($data = fgetcsv($csvFile, 1000, ",")) !== FALSE) {
-        list($fullname, $email, $password) = $data;
+        list($fullname, $email, $password, $gender) = $data;
         $fullname = $conn->real_escape_string($fullname);
         $email = $conn->real_escape_string($email);
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        $sql = "INSERT INTO user (fullname, email, upassword, role, verification_status) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO user (fullname, email, upassword, role, verification_status, gender) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssss", $fullname, $email, $hashedPassword, $role, $verification_status);
+        $stmt->bind_param("ssssss", $fullname, $email, $hashedPassword, $role, $verification_status, $gender);
 
         if ($stmt->execute()) {
             $successCount++;
@@ -121,6 +122,15 @@ $conn->close();
                             <option value="admin">Admin</option>
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary w-100">Create Account</button>
                 </form>
             </div>
@@ -134,7 +144,7 @@ $conn->close();
                     <div class="mb-3">
                         <label for="csv_file" class="form-label">Upload CSV File</label>
                         <input type="file" class="form-control" id="csv_file" name="csv_file" accept=".csv" required>
-                        <small class="form-text text-muted">CSV file should have columns: Full Name, Email, Password</small>
+                        <small class="form-text text-muted">CSV file should have columns: Full Name, Email, Password, Gender</small>
                     </div>
                     <div class="mb-3">
                         <label for="bulk_role" class="form-label">Role for All Accounts</label>

@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
   // Insert the user data into the database
-  $sql = "INSERT INTO user(fullname, email, upassword,role,verification_status) VALUES ('$fullname', '$email', '$hashedPassword','student','incomplete')";
+  $sql = "INSERT INTO user(fullname, email, upassword,role,gender,verification_status) VALUES ('$fullname', '$email', '$hashedPassword','student','Other','incomplete')";
 
   if ($conn->query($sql) === TRUE) {
     echo "<script>alert('Signup successful! You can now log in.'); window.location.href='../Login/login.php';</script>";

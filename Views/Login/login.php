@@ -42,7 +42,7 @@ include '../../public/includes/loginAuth.php';
           <i class="error error-icon fas fa-exclamation-circle"></i>
         </div>
       </div>
-      <div class="pass-txt"><a href="#">Forgot password?</a></div>
+      <div class="pass-txt"><a href="../ForgotPassword/forgot-password.php">Forgot password?</a></div>
       <input type="submit" value="Login">
     </form>
     <div class="sign-txt">Not yet a member? <a href="../Registration/registration.php">Signup now</a></div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2024 at 07:25 PM
+-- Generation Time: Nov 04, 2024 at 05:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,19 +32,14 @@ CREATE TABLE `user` (
   `email` varchar(40) NOT NULL,
   `upassword` varchar(255) NOT NULL,
   `role` varchar(10) NOT NULL,
-  `matric_id` varchar(15) NOT NULL,
+  `gender` varchar(10) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `verification_status` varchar(10) NOT NULL,
   `verification_proof` blob NOT NULL,
+  `picture` longblob NOT NULL,
   `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`fullname`, `email`, `upassword`, `role`, `matric_id`, `created_at`, `verification_status`, `verification_proof`, `id`) VALUES
-('aliff iman', 'student1@mydomain.com', '$2y$10$IlODHs8arh3UpEGxhdeUHeTiTQDsiuhdXjNapIlYQ5Sikz6TEvipC', 'staff', '', '2024-11-03 17:21:00', '', 0x30, 8);
 
 --
 -- Indexes for dumped tables
@@ -64,7 +59,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

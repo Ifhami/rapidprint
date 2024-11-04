@@ -27,14 +27,15 @@ if (isset($_SESSION['role'])) {
                 <!-- Account Registration Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="accountRegistrationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Account Registration
+                        Manage Account
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountRegistrationDropdown">
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/create-account.php">Create Account</a></li>
-                        <li><a class="dropdown-item" href="../../Views/Admin-Module/manage-account.php">Manage User</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Admin-Module/manage-account.php">Registered User</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Admin-Module/user-dashboard.php">User Dashboard</a></li>
                     </ul>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
                 </li>
@@ -44,7 +45,7 @@ if (isset($_SESSION['role'])) {
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
                 </li>
-                
+
                 <!-- User Dropdown -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item dropdown">
@@ -53,7 +54,9 @@ if (isset($_SESSION['role'])) {
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
                             <li><a class="dropdown-item" href="../../Views/Manage-User/user-profile.php">Manage Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li><a class="dropdown-item" href="../../public/includes/logout.php">Log Out</a></li>
                         </ul>
                     </li>
