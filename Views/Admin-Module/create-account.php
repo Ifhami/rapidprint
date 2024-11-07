@@ -67,6 +67,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,89 +81,101 @@ $conn->close();
             padding: 30px;
             margin-top: 50px;
         }
+
         @media (max-width: 768px) {
-            .card-custom { padding: 20px; }
-            .container { padding: 1rem; }
-            .btn { width: 100%; }
+            .card-custom {
+                padding: 20px;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<?php include '../../public/nav/adminnav.php'; ?> <!-- Include navbar -->
+    <?php include '../../public/nav/adminnav.php'; ?> <!-- Include navbar -->
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Create User Accounts</h2>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Create User Accounts</h2>
 
-    <div class="row g-4">
-        <!-- Single Account Creation Form -->
-        <div class="col-12 col-md-6">
-            <div class="card card-custom">
-                <h4 class="text-center mb-3">Single Account Creation</h4>
-                <form action="create-account.php" method="POST">
-                    <input type="hidden" name="single_account" value="1">
-                    <div class="mb-3">
-                        <label for="fullname" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="fullname" name="fullname" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select class="form-select" id="role" name="role" required>
-                            <option value="">Select Role</option>
-                            <option value="student">Student</option>
-                            <option value="staff">Staff</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender" class="form-label">Gender</label>
-                        <select class="form-select" id="gender" name="gender" required>
-                            <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Create Account</button>
-                </form>
+        <div class="row g-4">
+            <!-- Single Account Creation Form -->
+            <div class="col-12 col-md-6">
+                <div class="card card-custom">
+                    <h4 class="text-center mb-3">Single Account Creation</h4>
+                    <form action="create-account.php" method="POST">
+                        <input type="hidden" name="single_account" value="1">
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullname" name="fullname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select class="form-select" id="role" name="role" required>
+                                <option value="">Select Role</option>
+                                <option value="student">Student</option>
+                                <option value="staff">Staff</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                    </form>
+                </div>
             </div>
-        </div>
 
-        <!-- Bulk Account Creation Form -->
-        <div class="col-12 col-md-6">
-            <div class="card card-custom">
-                <h4 class="text-center mb-3">Bulk Account Creation</h4>
-                <form action="create-account.php" method="POST" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="csv_file" class="form-label">Upload CSV File</label>
-                        <input type="file" class="form-control" id="csv_file" name="csv_file" accept=".csv" required>
-                        <small class="form-text text-muted">CSV file should have columns: Full Name, Email, Password, Gender</small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="bulk_role" class="form-label">Role for All Accounts</label>
-                        <select class="form-select" id="bulk_role" name="bulk_role" required>
-                            <option value="">Select Role</option>
-                            <option value="student">Student</option>
-                            <option value="staff">Staff</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Upload & Create Accounts</button>
-                </form>
+            <!-- Bulk Account Creation Form -->
+            <div class="col-12 col-md-6">
+                <div class="card card-custom">
+                    <h4 class="text-center mb-3">Bulk Account Creation</h4>
+                    <form action="create-account.php" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="csv_file" class="form-label">Upload CSV File</label>
+                            <input type="file" class="form-control" id="csv_file" name="csv_file" accept=".csv" required>
+                            <small class="form-text text-muted">CSV file should have columns: Full Name, Email, Password, Gender</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bulk_role" class="form-label">Role for All Accounts</label>
+                            <select class="form-select" id="bulk_role" name="bulk_role" required>
+                                <option value="">Select Role</option>
+                                <option value="student">Student</option>
+                                <option value="staff">Staff</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Upload & Create Accounts</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Bootstrap JS and dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../public/includes/timeout.js"></script>
 </body>
+
 </html>

@@ -1,6 +1,6 @@
 
 // Set the inactivity time limit in milliseconds
-const idleTimeLimit = 300000;
+const idleTimeLimit = 300000; //5 mins
 let idleTimer;
 
 // Reset the timer whenever user activity is detected

@@ -1,7 +1,7 @@
 <?php
 // Include the database connection file and start session
 include '../../public/includes/db_connect.php';
-include '../../public/includes/staff.php';
+include '../../public/includes/admin.php';
 
 // Set the number of rows per page
 $rows_per_page = 3; // Changed to 3
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_students'])) 
 
 <body>
 
-    <?php include '../../public/nav/staffnav.php'; ?>
+    <?php include '../../public/nav/adminnav.php'; ?>
 
     <div class="container mt-5">
         <h2 class="mb-4 text-center">Student Card Approval</h2>
@@ -145,6 +145,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_students'])) 
             checkboxes.forEach(checkbox => checkbox.checked = selectAll.checked);
         }
     </script>
+
+    <script src="../../public/includes/timeout.js"></script>
 </body>
 
 </html>

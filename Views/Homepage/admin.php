@@ -31,7 +31,7 @@ include '../../public/includes/homepagename.php';
             position: relative;
             margin: 0;
         }
-        
+
         /* Overlay for dark gradient effect */
         .hero-section::before {
             content: "";
@@ -61,7 +61,8 @@ include '../../public/includes/homepagename.php';
         }
 
         /* Remove scrolling */
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -71,8 +72,8 @@ include '../../public/includes/homepagename.php';
 </head>
 
 <body>
-    
-<?php include '../../public/nav/adminnav.php'; ?> <!-- Include navbar -->
+
+    <?php include '../../public/nav/adminnav.php'; ?> <!-- Include navbar -->
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -89,6 +90,7 @@ include '../../public/includes/homepagename.php';
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../public/includes/timeout.js"></script>
 </body>
 
 </html>
