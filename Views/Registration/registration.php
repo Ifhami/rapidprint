@@ -1,7 +1,12 @@
-<?php
-/* MODULE 2
+<!--  
+
+MODULE 2
 NUR IFHAMI BINTI MOHD SUHAIMIN
-CA21053*/
+CA21053 
+
+-->
+
+<?php
 // Include the database connection file
 include '../../public/includes/db_connect.php';
 
