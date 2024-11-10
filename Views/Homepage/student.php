@@ -1,4 +1,7 @@
 <?php
+/* MODULE 2
+NUR IFHAMI BINTI MOHD SUHAIMIN
+CA21053*/
 // Include the database connection file and start session
 include '../../public/includes/db_connect.php';
 include '../../public/includes/student.php';

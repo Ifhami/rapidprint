@@ -1,3 +1,6 @@
+/* MODULE 2
+NUR IFHAMI BINTI MOHD SUHAIMIN
+CA21053*/
 const form = document.querySelector("form");
 eField = form.querySelector(".email"),
 eInput = eField.querySelector("input"),
