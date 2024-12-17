@@ -26,7 +26,7 @@ include '../../public/includes/loginAuth.php';
   <br>
 
   <div>
-    <img src="Assets/login.png" alt="Login" class="login-image">
+    <img src="../../public/Assets/login.png" alt="login.png" class="login-image">
   </div>
 
   <!-- Display error message if login fails -->
