@@ -7,10 +7,10 @@ include '../../public/includes/db_connect.php';
 
 // Include Authentication Logic
 include '../../public/includes/loginAuth.php';
-?>
+?>//testing
 
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
