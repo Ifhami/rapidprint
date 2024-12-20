@@ -7,10 +7,10 @@ include '../../public/includes/db_connect.php';
 
 // Include Authentication Logic
 include '../../public/includes/loginAuth.php';
-?>
+?>//testing
 
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -26,7 +26,7 @@ include '../../public/includes/loginAuth.php';
   <br>
 
   <div>
-    <img src="Assets/login.png" alt="Login" class="login-image">
+    <img src="../../public/Assets/login.png" alt="login.png" class="login-image">
   </div>
 
   <!-- Display error message if login fails -->
