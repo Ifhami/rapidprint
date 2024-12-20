@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['csv_file']) && $_FILE
         }
         $stmt->close();
     }
-    fclose($csvFile);
+    fclose(stream: $csvFile);
 
     echo "<script>alert('Bulk account creation completed. Success: $successCount, Failed: $errorCount'); window.location.href = 'create-account.php';</script>";
     exit;
