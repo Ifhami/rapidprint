@@ -53,7 +53,6 @@ include '../../public/includes/loginAuth.php';
 
       <div class="form-buttons">
         <button type="submit">Login</button>
-        <button type="button" onclick="window.location.href='signup.php'">Sign Up</button>
       </div>
     </form>
   </div>

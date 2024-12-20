@@ -95,6 +95,7 @@ button[type="button"]:hover {
 .form-buttons {
   display: flex;
   justify-content: space-between;
+  
 }
 
 .error {
