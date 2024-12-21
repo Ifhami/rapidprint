@@ -47,7 +47,7 @@ if (isset($_SESSION['role'])) {
                 </li>
 
                 <!-- User Dropdown -->
-                <?php if (isset($_SESSION['user_id'])): ?>
+                <?php if (isset($_SESSION['UserID'])): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user-circle"></i> <!-- Account Icon -->

@@ -11,43 +11,63 @@ CA21053
 include '../../public/includes/db_connect.php';
 include '../../public/includes/admin.php';
 
-// Fetch role data for pie chart
-$roleData = [];
-$roleLabels = [];
-$sql = "SELECT role, COUNT(*) as count FROM user GROUP BY role";
-$result = $conn->query($sql);
-while ($row = $result->fetch_assoc()) {
-    $roleLabels[] = $row['role'];
-    $roleData[] = $row['count'];
-}
-
-
-// Fetch gender data for pie chart
-$genderData = [];
-$genderLabels = [];
-$sql = "SELECT gender, COUNT(*) as count FROM user GROUP BY gender";
-$result = $conn->query($sql);
-while ($row = $result->fetch_assoc()) {
-    $genderLabels[] = $row['gender'];
-    $genderData[] = $row['count'];
-}
-
-
-
-// Fetch student verification data for bar chart
-$verificationData = ["pending" => 0, "completed" => 0, "rejected" => 0];
-$verificationLabels = ["Pending", "Completed", "Rejected"];
-$sql = "SELECT verification_status, COUNT(*) as count FROM user WHERE role = 'student' GROUP BY verification_status";
-$result = $conn->query($sql);
-while ($row = $result->fetch_assoc()) {
-    $status = $row['verification_status'];
-    if (isset($verificationData[$status])) {
-        $verificationData[$status] = (int)$row['count'];
+// Function to fetch role data for pie chart
+function fetchRoleData($conn) {
+    $roleData = [];
+    $roleLabels = [];
+    $sql = "SELECT role, COUNT(*) as count FROM registration GROUP BY role";
+    if ($result = $conn->query($sql)) {
+        while ($row = $result->fetch_assoc()) {
+            $roleLabels[] = $row['role'];
+            $roleData[] = (int)$row['count'];
+        }
+    } else {
+        echo "Error fetching role data: " . $conn->error;
     }
+    return [$roleLabels, $roleData];
 }
 
+// Function to fetch gender data for pie chart
+function fetchGenderData($conn) {
+    $genderData = [];
+    $genderLabels = [];
+    $sql = "SELECT gender, COUNT(*) as count FROM registration GROUP BY gender";
+    if ($result = $conn->query($sql)) {
+        while ($row = $result->fetch_assoc()) {
+            $genderLabels[] = $row['gender'];
+            $genderData[] = (int)$row['count'];
+        }
+    } else {
+        echo "Error fetching gender data: " . $conn->error;
+    }
+    return [$genderLabels, $genderData];
+}
+
+// Function to fetch student verification data for bar chart
+function fetchVerificationData($conn) {
+    $verificationData = ["pending" => 0, "completed" => 0, "rejected" => 0];
+    $verificationLabels = ["Pending", "Completed", "Rejected"];
+    $sql = "SELECT verification_status, COUNT(*) as count FROM registration WHERE role = 'student' GROUP BY verification_status";
+    if ($result = $conn->query($sql)) {
+        while ($row = $result->fetch_assoc()) {
+            $status = $row['verification_status'];
+            if (isset($verificationData[$status])) {
+                $verificationData[$status] = (int)$row['count'];
+            }
+        }
+    } else {
+        echo "Error fetching verification data: " . $conn->error;
+    }
+    return [$verificationLabels, array_values($verificationData)];
+}
+
+// Fetch data for charts
+list($roleLabels, $roleData) = fetchRoleData($conn);
+list($genderLabels, $genderData) = fetchGenderData($conn);
+list($verificationLabels, $verificationData) = fetchVerificationData($conn);
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

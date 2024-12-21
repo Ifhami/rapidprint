@@ -86,7 +86,7 @@ include '../../public/includes/homepagename.php';
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-content">
-            <h1 class="display-4">Welcome, <?php echo htmlspecialchars($fullname); ?></h1>
+            <h1 class="display-4">Welcome, <?php echo htmlspecialchars($full_name); ?></h1>
             <p class="lead">Remember, your only limit is the one you set yourself.</p>
         </div>
     </section>

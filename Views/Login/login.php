@@ -7,8 +7,7 @@ include '../../public/includes/db_connect.php';
 
 // Include Authentication Logic
 include '../../public/includes/loginAuth.php';
-?>//testing
-
+?>
 
 <!DOCTYPE html> 
 <html lang="en">
