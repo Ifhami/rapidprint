@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2024 at 02:36 AM
+-- Generation Time: Dec 21, 2024 at 02:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,13 +24,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Table structure for table `customer`
 --
 
-CREATE TABLE `admin` (
-  `AdminID` int(11) NOT NULL,
+CREATE TABLE `customer` (
+  `CustomerID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
-  `status` varchar(50) DEFAULT NULL
+  `membership_ID` int(11) DEFAULT NULL,
+  `verify_proof` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -38,21 +39,21 @@ CREATE TABLE `admin` (
 --
 
 --
--- Indexes for table `admin`
+-- Indexes for table `customer`
 --
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`AdminID`),
-  ADD KEY `UserID` (`UserID`);
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`CustomerID`),
+  ADD KEY `membership_ID` (`membership_ID`);
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `admin`
+-- Constraints for table `customer`
 --
-ALTER TABLE `admin`
-  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `registration` (`UserID`);
+ALTER TABLE `customer`
+  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`membership_ID`) REFERENCES `membership_card` (`membership_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

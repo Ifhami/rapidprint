@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2024 at 04:47 PM
+-- Generation Time: Dec 21, 2024 at 02:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,14 +24,15 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `login`
+-- Table structure for table `payment`
 --
 
-CREATE TABLE `login` (
-  `LoginID` int(11) NOT NULL,
-  `LoginUserName` varchar(20) NOT NULL,
-  `LoginPassword` varchar(10) NOT NULL,
-  `LoginType` enum('Administrator','Student Postgraduate','Student Undergraduate','Staff') NOT NULL
+CREATE TABLE `payment` (
+  `Payment_ID` int(11) NOT NULL,
+  `Order_ID` int(11) NOT NULL,
+  `PaymentMethod` varchar(50) NOT NULL,
+  `PaymentDate` date NOT NULL,
+  `QR_Code` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -39,10 +40,21 @@ CREATE TABLE `login` (
 --
 
 --
--- Indexes for table `login`
+-- Indexes for table `payment`
 --
-ALTER TABLE `login`
-  ADD PRIMARY KEY (`LoginID`);
+ALTER TABLE `payment`
+  ADD PRIMARY KEY (`Payment_ID`),
+  ADD KEY `Order_ID` (`Order_ID`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `payment`
+--
+ALTER TABLE `payment`
+  ADD CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`Order_ID`) REFERENCES `order` (`Order_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

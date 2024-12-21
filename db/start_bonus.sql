@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2024 at 02:36 AM
+-- Generation Time: Dec 21, 2024 at 02:38 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,13 +24,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Table structure for table `start_bonus`
 --
 
-CREATE TABLE `admin` (
-  `AdminID` int(11) NOT NULL,
-  `UserID` int(11) NOT NULL,
-  `status` varchar(50) DEFAULT NULL
+CREATE TABLE `start_bonus` (
+  `Bonus_ID` int(11) NOT NULL,
+  `Staff_ID` int(11) NOT NULL,
+  `Date_Recorded` date NOT NULL,
+  `Bonus_Amount` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -38,21 +39,21 @@ CREATE TABLE `admin` (
 --
 
 --
--- Indexes for table `admin`
+-- Indexes for table `start_bonus`
 --
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`AdminID`),
-  ADD KEY `UserID` (`UserID`);
+ALTER TABLE `start_bonus`
+  ADD PRIMARY KEY (`Bonus_ID`),
+  ADD KEY `Staff_ID` (`Staff_ID`);
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `admin`
+-- Constraints for table `start_bonus`
 --
-ALTER TABLE `admin`
-  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `registration` (`UserID`);
+ALTER TABLE `start_bonus`
+  ADD CONSTRAINT `start_bonus_ibfk_1` FOREIGN KEY (`Staff_ID`) REFERENCES `staff` (`Staff_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

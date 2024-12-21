@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2024 at 04:47 PM
+-- Generation Time: Dec 21, 2024 at 02:36 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `branch` (
   `BranchID` int(11) NOT NULL,
-  `Branch` varchar(20) NOT NULL,
-  `BranchLocation` varchar(100) NOT NULL,
-  `BranchContact` varchar(20) NOT NULL,
-  `BranchEmail` varchar(50) NOT NULL
+  `AdminID` int(11) NOT NULL,
+  `BranchLocation` varchar(255) DEFAULT NULL,
+  `BranchContact` varchar(50) DEFAULT NULL,
+  `BranchEmail` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -43,7 +43,18 @@ CREATE TABLE `branch` (
 -- Indexes for table `branch`
 --
 ALTER TABLE `branch`
-  ADD PRIMARY KEY (`BranchID`);
+  ADD PRIMARY KEY (`BranchID`),
+  ADD KEY `AdminID` (`AdminID`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `branch`
+--
+ALTER TABLE `branch`
+  ADD CONSTRAINT `branch_ibfk_1` FOREIGN KEY (`AdminID`) REFERENCES `admin` (`AdminID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

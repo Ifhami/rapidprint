@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2024 at 04:47 PM
+-- Generation Time: Dec 21, 2024 at 02:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,15 +24,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `administordashboard`
+-- Table structure for table `membership_card`
 --
 
-CREATE TABLE `administordashboard` (
-  `AdminReportID` int(11) NOT NULL,
-  `AdminID` int(11) NOT NULL,
-  `ReportDate` date NOT NULL,
-  `OrderReport` int(11) NOT NULL,
-  `TotalIncome` decimal(10,0) NOT NULL
+CREATE TABLE `membership_card` (
+  `membership_ID` int(11) NOT NULL,
+  `points` int(11) NOT NULL,
+  `qr_code` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -40,11 +38,10 @@ CREATE TABLE `administordashboard` (
 --
 
 --
--- Indexes for table `administordashboard`
+-- Indexes for table `membership_card`
 --
-ALTER TABLE `administordashboard`
-  ADD PRIMARY KEY (`AdminReportID`),
-  ADD UNIQUE KEY `Admin` (`AdminID`);
+ALTER TABLE `membership_card`
+  ADD PRIMARY KEY (`membership_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

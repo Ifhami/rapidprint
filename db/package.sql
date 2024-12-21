@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2024 at 08:52 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 8.0.2
+-- Generation Time: Dec 21, 2024 at 02:37 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,13 +28,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `package` (
-  `Package_ID` varchar(20) NOT NULL,
-  `Package_Name` varchar(50) NOT NULL,
-  `Price` decimal(10,2) NOT NULL,
-  `Description` text DEFAULT NULL,
-  `Availability_Status` varchar(20) NOT NULL,
-  `QR_Code` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Package_ID` int(11) NOT NULL,
+  `Package_detail` varchar(255) DEFAULT NULL,
+  `Price` decimal(10,2) DEFAULT NULL,
+  `Availability_Status` varchar(50) DEFAULT NULL,
+  `QR_Code` varchar(255) DEFAULT NULL,
+  `Package_Name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables

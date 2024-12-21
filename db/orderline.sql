@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2024 at 02:36 AM
+-- Generation Time: Dec 21, 2024 at 02:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,13 +24,15 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Table structure for table `orderline`
 --
 
-CREATE TABLE `admin` (
-  `AdminID` int(11) NOT NULL,
-  `UserID` int(11) NOT NULL,
-  `status` varchar(50) DEFAULT NULL
+CREATE TABLE `orderline` (
+  `OrdLine_ID` int(11) NOT NULL,
+  `Order_ID` int(11) NOT NULL,
+  `Package_ID` int(11) NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  `Total_Cost` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -38,21 +40,23 @@ CREATE TABLE `admin` (
 --
 
 --
--- Indexes for table `admin`
+-- Indexes for table `orderline`
 --
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`AdminID`),
-  ADD KEY `UserID` (`UserID`);
+ALTER TABLE `orderline`
+  ADD PRIMARY KEY (`OrdLine_ID`),
+  ADD KEY `Order_ID` (`Order_ID`),
+  ADD KEY `Package_ID` (`Package_ID`);
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `admin`
+-- Constraints for table `orderline`
 --
-ALTER TABLE `admin`
-  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `registration` (`UserID`);
+ALTER TABLE `orderline`
+  ADD CONSTRAINT `orderline_ibfk_1` FOREIGN KEY (`Order_ID`) REFERENCES `order` (`Order_ID`),
+  ADD CONSTRAINT `orderline_ibfk_2` FOREIGN KEY (`Package_ID`) REFERENCES `package` (`Package_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

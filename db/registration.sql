@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2024 at 04:47 PM
+-- Generation Time: Dec 21, 2024 at 02:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,18 +24,18 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `printingpackage`
+-- Table structure for table `registration`
 --
 
-CREATE TABLE `printingpackage` (
-  `PackageID` int(11) NOT NULL,
-  `PackageType` varchar(20) NOT NULL,
-  `PackageImage` blob NOT NULL,
-  `PackageColor` varchar(20) NOT NULL,
-  `PackageSide` varchar(20) NOT NULL,
-  `PackageStatus` enum('Available','Unavailable') NOT NULL,
-  `PackagePrice` varchar(10) NOT NULL,
-  `QrCode` varchar(10) NOT NULL
+CREATE TABLE `registration` (
+  `UserID` int(11) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `gender` varchar(50) DEFAULT NULL,
+  `picture` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` varchar(50) DEFAULT NULL,
+  `registrationDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -43,10 +43,10 @@ CREATE TABLE `printingpackage` (
 --
 
 --
--- Indexes for table `printingpackage`
+-- Indexes for table `registration`
 --
-ALTER TABLE `printingpackage`
-  ADD PRIMARY KEY (`PackageID`);
+ALTER TABLE `registration`
+  ADD PRIMARY KEY (`UserID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
