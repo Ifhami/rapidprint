@@ -17,101 +17,36 @@ $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] :
 $offset = ($page - 1) * $rows_per_page;
 
 // Initialize role filter and search term
-$roleFilter = isset($_GET['role_filter']) && in_array($_GET['role_filter'], ['student', 'staff', 'all']) 
-    ? $_GET['role_filter'] 
-    : 'all';
-$searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+$roleFilter = isset($_GET['role_filter']) ? $_GET['role_filter'] : 'all';
+$searchTerm = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
 
-// Function to fetch filtered and paginated data
-function fetchUsers($conn, $roleFilter, $searchTerm, $rows_per_page, $offset) {
-    $sql = "SELECT UserID, full_name, picture FROM registration";
-    $params = [];
-    $types = '';
-
-    $whereClauses = [];
-    if ($roleFilter !== 'all') {
-        $whereClauses[] = "role = ?";
-        $params[] = $roleFilter;
-        $types .= 's';
-    }
-    if (!empty($searchTerm)) {
-        $whereClauses[] = "full_name LIKE ?";
-        $params[] = "%$searchTerm%";
-        $types .= 's';
-    }
-    if (!empty($whereClauses)) {
-        $sql .= " WHERE " . implode(" AND ", $whereClauses);
-    }
-
-    $sql .= " LIMIT ? OFFSET ?";
-    $params[] = $rows_per_page;
-    $params[] = $offset;
-    $types .= 'ii';
-
-    $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        die("Database error: " . $conn->error);
-    }
-
-    // If there are parameters to bind
-    if (!empty($types)) {
-        $stmt->bind_param($types, ...$params);
-    }
-
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
-
-    return $result;
+// Base SQL query with filters for role and search term
+$sql = "SELECT UserID, full_name, picture FROM user";
+$whereClauses = [];
+if ($roleFilter === 'student' || $roleFilter === 'staff') {
+    $whereClauses[] = "role = '$roleFilter'";
+}
+if ($searchTerm) {
+    $whereClauses[] = "full_name LIKE '%$searchTerm%'";
+}
+if (!empty($whereClauses)) {
+    $sql .= " WHERE " . implode(" AND ", $whereClauses);
 }
 
-// Function to get the total count of filtered data
-function fetchTotalCount($conn, $roleFilter, $searchTerm) {
-    $sql = "SELECT COUNT(*) AS total FROM registration";
-    $params = [];
-    $types = '';
+// Add pagination limit and offset
+$sql .= " LIMIT $rows_per_page OFFSET $offset";
+$result = $conn->query($sql);
 
-    $whereClauses = [];
-    if ($roleFilter !== 'all') {
-        $whereClauses[] = "role = ?";
-        $params[] = $roleFilter;
-        $types .= 's';
-    }
-    if (!empty($searchTerm)) {
-        $whereClauses[] = "full_name LIKE ?";
-        $params[] = "%$searchTerm%";
-        $types .= 's';
-    }
-    if (!empty($whereClauses)) {
-        $sql .= " WHERE " . implode(" AND ", $whereClauses);
-    }
-
-    $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        die("Database error: " . $conn->error);
-    }
-
-    // If there are parameters to bind
-    if (!empty($types)) {
-        $stmt->bind_param($types, ...$params);
-    }
-
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $total_count = $result->fetch_assoc()['total'];
-    $stmt->close();
-
-    return $total_count;
+// Get the total count for pagination
+$total_count_sql = "SELECT COUNT(*) AS total FROM user";
+if (!empty($whereClauses)) {
+    $total_count_sql .= " WHERE " . implode(" AND ", $whereClauses);
 }
-
-
-// Fetch paginated data and total count
-$result = fetchUsers($conn, $roleFilter, $searchTerm, $rows_per_page, $offset);
-$total_rows = fetchTotalCount($conn, $roleFilter, $searchTerm);
+$total_count_result = $conn->query($total_count_sql);
+$total_count_row = $total_count_result->fetch_assoc();
+$total_rows = $total_count_row['total'];
 $total_pages = ceil($total_rows / $rows_per_page);
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -256,12 +191,12 @@ $total_pages = ceil($total_rows / $rows_per_page);
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
-        function openViewModal(userId) {
+        function openViewModal(UserId) {
             $.ajax({
                 url: 'view-user.php',
                 type: 'GET',
                 data: {
-                    id: userId
+                    id: UserId
                 },
                 success: function(data) {
                     $('#viewModalBody').html(data);
@@ -270,12 +205,12 @@ $total_pages = ceil($total_rows / $rows_per_page);
             });
         }
 
-        function openEditModal(userId) {
+        function openEditModal(UserId) {
             $.ajax({
                 url: 'edit-user.php',
                 type: 'GET',
                 data: {
-                    id: userId
+                    id: UserId
                 },
                 success: function(data) {
                     $('#editModalBody').html(data);

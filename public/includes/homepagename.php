@@ -10,7 +10,7 @@ include '../../public/includes/db_connect.php'; // Include database connection
 if (isset($_SESSION['UserID'])) {
     // Fetch the latest name from the database
     $user_id = $_SESSION['UserID'];
-    $sql = "SELECT full_name FROM registration WHERE UserID = ?"; // Use the correct column name
+    $sql = "SELECT full_name FROM user WHERE UserID = ?"; // Use the correct column name
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {

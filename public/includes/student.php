@@ -17,9 +17,9 @@ $fullname = $_SESSION['full_name'];
 $role = $_SESSION['role'];
 
 // Fetch the verification status from the database
-$sql = "SELECT verification_status FROM registration WHERE UserID = ?";  
+$sql = "SELECT verification_status FROM user WHERE UserID = ?";  
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);  // Use $user_id instead of $UserID
+$stmt->bind_param("i", $UserID);  // Use $user_id instead of $UserID
 $stmt->execute();
 $stmt->bind_result($verification_status);
 $stmt->fetch();
