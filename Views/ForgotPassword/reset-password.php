@@ -11,11 +11,12 @@ if (!isset($_SESSION['reset_email'])) {
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_password'])) {
+    // Hash the new password
     $new_password = password_hash($_POST['new_password'], PASSWORD_BCRYPT);
     $email = $_SESSION['reset_email'];
     
     // Update the password in the database
-    $sql = "UPDATE user SET upassword = ? WHERE email = ?";
+    $sql = "UPDATE user SET newpassword = ? WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $new_password, $email);
     

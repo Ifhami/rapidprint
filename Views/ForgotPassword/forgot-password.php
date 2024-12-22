@@ -10,25 +10,30 @@ $message = "";
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['email'])) {
     $email = $conn->real_escape_string($_POST['email']);
-    
-    // Check if the email exists in the database
-    $sql = "SELECT id FROM user WHERE email = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
 
-    if ($stmt->num_rows > 0) {
-        // Email found in the database
-        $stmt->close();
-        $_SESSION['reset_email'] = $email;
-        header("Location: reset-password.php"); // Redirect to reset password page
-        exit();
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message = "Please enter a valid email address.";
     } else {
-        // Email not found
-        $message = "Email address not found.";
+        // Check if the email exists in the database
+        $sql = "SELECT 1 FROM user WHERE email = ?";  // Query modified to select '1' instead of 'id'
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            // Email found in the database
+            $stmt->close();
+            $_SESSION['reset_email'] = $email;
+            header("Location: reset-password.php"); // Redirect to reset password page
+            exit();
+        } else {
+            // Email not found
+            $message = "Email address not found.";
+        }
+        $stmt->close();
     }
-    $stmt->close();
 }
 
 $conn->close();
