@@ -54,6 +54,7 @@ if (isset($_SESSION['role'])) {
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
                             <li><a class="dropdown-item" href="../../Views/Manage-User/user-profile.php">Manage Profile</a></li>
+                           
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
