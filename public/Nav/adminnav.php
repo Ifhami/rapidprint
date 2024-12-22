@@ -32,6 +32,8 @@ if (isset($_SESSION['role'])) {
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountRegistrationDropdown">
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/create-account.php">Create Account</a></li>
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/manage-account.php">Registered User</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Admin-Module/branch-updation.php">Branch Updation</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Admin-Module/package-updation.php">Package Updation</a></li>
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/user-dashboard.php">User Dashboard</a></li>
                     </ul>
                 </li>
