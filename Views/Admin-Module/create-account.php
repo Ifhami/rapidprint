@@ -122,7 +122,7 @@ $conn->close();
                         <input type="hidden" name="single_account" value="1">
                         <div class="mb-3">
                             <label for="fullname" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="fullname" name="fullname" required>
+                            <input type="text" class="form-control" id="fullname" name="full_name" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
