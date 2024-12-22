@@ -41,13 +41,12 @@ include '../../public/includes/loginAuth.php';
       <label for="password">Password</label>
       <input type="password" id="password" name="password" placeholder="Password" required>
 
-      <label for="user_type">User Type</label>
+      <label for="user_type">Role</label>
       <select id="user_type" name="user_type" required>
         <option value="">- Select -</option>
-        <option value="administrator">Administrator</option>
-        <option value="student_postgraduate">Student Postgraduate</option>
-        <option value="student_undergraduate">Student Undergraduate</option>
-        <option value="koperasi_staff">Koperasi Staff</option>
+        <option value="administrator">Admin</option>
+        <option value="student_postgraduate">Student</option>
+        <option value="koperasi_staff">Staff</option>
       </select>
 
       <div class="form-buttons">
