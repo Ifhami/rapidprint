@@ -5,11 +5,11 @@ include '../../public/includes/db_connect.php';
 
 // Handle the form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
-    $orderId = $_POST['order_id'];
-    $newStatus = $_POST['status'];
+    $orderId = $_POST['Order_ID'];
+    $newStatus = $_POST['Status'];
 
-    // Update query
-    $sql = "UPDATE orders SET status='$newStatus' WHERE id=$orderId";
+    // Update query with backticks for the table name
+    $sql = "UPDATE `order` SET status='$newStatus' WHERE Order_ID=$orderId";
 
     if (mysqli_query($conn, $sql)) {
         $message = "Order status updated successfully.";
@@ -18,9 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     }
 }
 
-// Fetch all orders
-$orders = mysqli_query($conn, "SELECT * FROM orders");
-
+// Fetch all orders with backticks for the table name
+$orders = mysqli_query($conn, "SELECT * FROM `order`");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,107 +27,104 @@ $orders = mysqli_query($conn, "SELECT * FROM orders");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Order Status</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
+            background-color: #f8f9fa;
         }
-        h1 {
+        .container {
+            margin-top: 50px;
+        }
+        .table th {
+            text-transform: uppercase;
+        }
+        .btn-update {
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-update:hover {
+            background-color: #0056b3;
+        }
+        .alert {
             text-align: center;
-            color: #333;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f7f7f7;
-        }
-        .form-container {
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            max-width: 500px;
-            margin: 0 auto;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .form-container input[type="text"],
-        .form-container select,
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .success-message {
-            color: green;
-            font-weight: bold;
+        .no-data {
             text-align: center;
-            margin-bottom: 20px;
-        }
-        .error-message {
-            color: red;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 20px;
+            color: #6c757d;
+            font-size: 1.2em;
         }
     </style>
 </head>
 <body>
+<div class="container">
+    <h1 class="text-center text-primary mb-4">Update Order Status</h1>
 
-<h1>Update Order Status</h1>
+    <!-- Message Display -->
+    <?php if (!empty($message)): ?>
+        <div class="alert <?php echo strpos($message, 'Error') === false ? 'alert-success' : 'alert-danger'; ?>" role="alert">
+            <?php echo $message; ?>
+        </div>
+    <?php endif; ?>
 
-<?php if (!empty($message)): ?>
-    <div class="<?php echo strpos($message, 'Error') === false ? 'success-message' : 'error-message'; ?>">
-        <?php echo $message; ?>
+    <!-- Orders Table -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h5>Orders List</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer ID</th>
+                        <th>Staff ID</th>
+                        <th>Status</th>
+                        <th>Order Date</th>
+                        <th>Points Earned</th>
+                        <th>Payment Method</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($orders && mysqli_num_rows($orders) > 0): ?>
+                        <?php while ($order = mysqli_fetch_assoc($orders)): ?>
+                            <tr>
+                                <td><?php echo $order['Order_ID']; ?></td>
+                                <td><?php echo $order['CustomerID']; ?></td>
+                                <td><?php echo $order['Staff_ID']; ?></td>
+                                <td><?php echo $order['Status']; ?></td>
+                                <td><?php echo $order['Order_Date']; ?></td>
+                                <td><?php echo $order['Points_Earned']; ?></td>
+                                <td><?php echo $order['Payment_Method']; ?></td>
+                                <td>
+                                    <!-- Update Form -->
+                                    <form method="POST" class="d-inline">
+                                        <input type="hidden" name="Order_ID" value="<?php echo $order['Order_ID']; ?>">
+                                        <select name="Status" class="form-select form-select-sm mb-2">
+                                            <option value="Pending" <?php echo $order['Status'] === 'Pending' ? 'selected' : ''; ?>>Pending</option>
+                                            <option value="Processing" <?php echo $order['Status'] === 'Processing' ? 'selected' : ''; ?>>Processing</option>
+                                            <option value="Order complete" <?php echo $order['Status'] === 'Order complete' ? 'selected' : ''; ?>>Order complete</option>
+                                        </select>
+                                        <button type="submit" name="update_status" class="btn btn-update btn-sm">Update</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="8" class="no-data">No orders available to update.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
-<?php endif; ?>
+</div>
 
-<!-- Table of Orders -->
-<table>
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Customer Name</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php while ($order = mysqli_fetch_assoc($orders)): ?>
-            <tr>
-                <td><?php echo $order['id']; ?></td>
-                <td><?php echo $order['customer_name']; ?></td>
-                <td><?php echo $order['status']; ?></td>
-                <td>
-                    <form method="POST">
-                        <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
-                        <select name="status">
-                            <option value="Pending" <?php echo $order['status'] === 'Pending' ? 'selected' : ''; ?>>Pending</option>
-                            <option value="Processing" <?php echo $order['status'] === 'Processing' ? 'selected' : ''; ?>>Processing</option>
-                            <option value="Completed" <?php echo $order['status'] === 'Completed' ? 'selected' : ''; ?>>Completed</option>
-                        </select>
-                        <button type="submit" name="update_status">Update</button>
-                    </form>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </tbody>
-</table>
-
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
