@@ -202,7 +202,7 @@ include '../../public/includes/admin.php';
 
 <div class="buttons">
     <button onclick="createPackage()" class="create">Create</button>
-    <button onclick="deletePackage()" class="Edit">Edit</button>
+    <button onclick="editPackage()">Edit</button>
     <button onclick="deletePackage()" class="delete">Delete</button>
 </div>
 
@@ -278,35 +278,111 @@ include '../../public/includes/admin.php';
         window.location.href = 'package-create.php';
     }
 
-    // Function to delete selected packages
-    function deletePackage() {
-        const selected = getSelectedPackages();
-        if (selected.length > 0) {
-            if (confirm('Are you sure you want to delete the selected packages?')) {
-                fetch('package-delete.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ packageIDs: selected }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Failed to delete packages.');
-                });
-            }
-        } else {
-            alert('Please select at least one package to delete.');
-        }
-    }
+    function editPackage() {
+    const selected = getSelectedPackages();
+    if (selected.length === 1) {
+        const packageID = selected[0];
+        const row = document.querySelector(`input[value="${packageID}"]`).closest('tr');
+        const cells = row.querySelectorAll('td');
 
-    // Function to edit a package
-    function editPackage(packageID) {
-        window.location.href = `package-edit.php?packageID=${packageID}`;
+        // Replace cell content with input fields
+        cells[1].innerHTML = `<input type="text" value="${cells[1].textContent.trim()}" id="packageName">`;
+        cells[2].innerHTML = `<input type="text" value="${cells[2].textContent.trim()}" id="packageDetail">`;
+        cells[3].innerHTML = `<input type="number" step="0.01" value="${parseFloat(cells[3].textContent.replace('MYR', '').trim())}" id="price">`;
+        cells[4].innerHTML = `<select id="status">
+            <option value="Available" ${cells[4].textContent.trim() === 'Available' ? 'selected' : ''}>Available</option>
+            <option value="Unavailable" ${cells[4].textContent.trim() === 'Unavailable' ? 'selected' : ''}>Unavailable</option>
+        </select>`;
+        cells[5].innerHTML = `<input type="text" value="${cells[5].querySelector('img').src}" id="qrCode">`;
+
+        // Change the last cell to show save button
+        cells[6].innerHTML = `<button onclick="savePackage(${packageID}, this)">Save</button>`;
+    } else if (selected.length === 0) {
+        alert('Please select a package to edit.');
+    } else {
+        alert('Please select only one package to edit.');
     }
+}
+
+// Function to save the edited package details
+async function savePackage(packageID, button) {
+    // Get updated values from the input fields
+    const packageName = document.getElementById('packageName').value;
+    const packageDetail = document.getElementById('packageDetail').value;
+    const price = parseFloat(document.getElementById('price').value);
+    const status = document.getElementById('status').value;
+    const qrCode = document.getElementById('qrCode').value;
+
+    // Send the updated data to the server to save the changes
+    try {
+        const response = await fetch('package-edit.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                packageID: packageID,
+                package_name: packageName,
+                package_detail: packageDetail,
+                price: price,
+                status: status,
+                qr_code: qrCode
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Package updated successfully.');
+
+            // Update the DOM with the new values
+            const row = button.closest('tr');
+            row.querySelector('td:nth-child(2)').textContent = packageName;
+            row.querySelector('td:nth-child(3)').textContent = packageDetail;
+            row.querySelector('td:nth-child(4)').textContent = price.toFixed(2);
+            row.querySelector('td:nth-child(5)').textContent = status;
+            row.querySelector('td:nth-child(6)').textContent = qrCode;
+
+            // Change the save button back to the edit button
+            row.querySelector('td:nth-child(7)').innerHTML = `<button onclick="editPackage()">Edit</button>`;
+        } else {
+            alert('Failed to update the package.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while saving the package.');
+    }
+}
+
+// Function to delete selected packages
+function deletePackage() {
+    const selected = getSelectedPackages();
+    if (selected.length > 0) {
+        if (confirm('Are you sure you want to delete the selected packages?')) {
+            fetch('package-delete.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ packageIDs: selected }), // Ensure 'packageIDs' is used here
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                window.location.reload(); // Reload the page after deletion
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to delete packages.');
+            });
+        }
+    } else {
+        alert('Please select at least one package to delete.');
+    }
+}
+
+// Function to get selected package IDs
+function getSelectedPackages() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    return Array.from(checkboxes).map(checkbox => checkbox.value); // Returns an array of selected package IDs
+}
+
 
     // Function to get selected package IDs
     function getSelectedPackages() {
