@@ -71,6 +71,89 @@ include '../../public/includes/admin.php';
         .buttons button.create:hover {
             background-color: #1c7c32;
         }
+
+        .buttons button.edit {
+            background-color:  #007BFF;
+        }
+
+        .buttons button.edit:hover {
+            background-color: #0056b3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 10px;
+        }
+
+        .close {
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+            background-color: #dc3545;
+            padding: 5px 10px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .close:hover {
+            background-color: #a71d2a;
+        }
+
+        .modal-body {
+            margin-top: 20px;
+        }
+
+        /* Table Styles Inside the Modal */
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .modal-table th, .modal-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .modal-table th {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .modal-table td {
+            background-color: #f9f9f9;
+        }
+
+        .modal-table tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
@@ -104,7 +187,7 @@ include '../../public/includes/admin.php';
                     echo "<td>MYR {$row['price']}</td>"; // Updated line to display MYR
                     echo "<td>{$row['status']}</td>";
                     echo "<td><img src='{$row['qr_code']}' alt='QR Code' style='width:50px;height:50px;'/></td>";
-                    echo "<td><button onclick='editPackage({$row['packageID']})'>Edit</button></td>";
+                    echo "<td><button onclick='viewPackage({$row['packageID']})'>View</button></td>";
                     echo "</tr>";
                 }
             } else {
@@ -119,10 +202,77 @@ include '../../public/includes/admin.php';
 
 <div class="buttons">
     <button onclick="createPackage()" class="create">Create</button>
+    <button onclick="deletePackage()" class="Edit">Edit</button>
     <button onclick="deletePackage()" class="delete">Delete</button>
 </div>
 
-<script>
+
+    <!-- Modal for Viewing Package Details -->
+    <div id="packageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Package Details</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <table class="modal-table">
+                    <tr>
+                        <th>Package Name</th>
+                        <td id="modalPackageName"></td>
+                    </tr>
+                    <tr>
+                        <th>Package Detail</th>
+                        <td id="modalPackageDetail"></td>
+                    </tr>
+                    <tr>
+                        <th>Price</th>
+                        <td id="modalPrice"></td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td id="modalStatus"></td>
+                    </tr>
+                    <tr>
+                        <th>QR Code</th>
+                        <td id="modalQR"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Function to open the modal with package details
+        function viewPackage(packageID) {
+            fetch(`package-view.php?packageID=${packageID}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('modalPackageName').textContent = data.package.package_name;
+                        document.getElementById('modalPackageDetail').textContent = data.package.package_detail;
+                        document.getElementById('modalPrice').textContent = data.package.price;
+                        document.getElementById('modalStatus').textContent = data.package.status;
+                        document.getElementById('modalQR').textContent = data.package.qr_code;
+
+                        // Show the modal
+                        document.getElementById('packageModal').style.display = 'block';
+                    } else {
+                        alert('Package not found.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to fetch Package details.');
+                });
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('packageModal').style.display = 'none';
+        }
+
+
     // Function to create a new package
     function createPackage() {
         window.location.href = 'package-create.php';
