@@ -31,7 +31,7 @@ $orders = mysqli_query($conn, "SELECT * FROM `order`");
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color:  white;
         }
         .container {
             margin-top: 50px;
@@ -40,19 +40,20 @@ $orders = mysqli_query($conn, "SELECT * FROM `order`");
             text-transform: uppercase;
         }
         .btn-update {
-            background-color: #007bff;
+            background-color: navy;
             color: white;
             transition: background-color 0.3s;
         }
         .btn-update:hover {
-            background-color: #0056b3;
+            background-color: lightblue;
+            color: navy;
         }
         .alert {
             text-align: center;
         }
         .no-data {
             text-align: center;
-            color: #6c757d;
+            color: black;
             font-size: 1.2em;
         }
     </style>

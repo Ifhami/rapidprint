@@ -88,7 +88,7 @@ mysqli_close($conn);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .table th {
-            background-color: #0d6efd;
+            background-color: black;
             color: #fff;
         }
         .btn {
