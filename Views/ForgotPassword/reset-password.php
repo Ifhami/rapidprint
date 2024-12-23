@@ -10,15 +10,15 @@ if (!isset($_SESSION['reset_email'])) {
 }
 
 // Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_password'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['password'])) {
     // Hash the new password
-    $new_password = password_hash($_POST['new_password'], PASSWORD_BCRYPT);
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $email = $_SESSION['reset_email'];
     
     // Update the password in the database
-    $sql = "UPDATE user SET newpassword = ? WHERE email = ?";
+    $sql = "UPDATE user SET password = ? WHERE email = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $new_password, $email);
+    $stmt->bind_param("ss", $password, $email);
     
     if ($stmt->execute()) {
         // Display JavaScript alert and redirect to login page
@@ -169,7 +169,7 @@ $conn->close();
         <div class="field password">
             <div class="input-area">
                 <i class="icon fas fa-lock"></i>
-                <input type="password" placeholder="Enter new password" name="new_password" required>
+                <input type="password" placeholder="Enter new password" name="password" required>
             </div>
         </div>
         <input type="submit" value="Reset Password">
