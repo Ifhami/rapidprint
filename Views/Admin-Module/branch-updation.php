@@ -146,7 +146,6 @@ include '../../public/includes/admin.php';
         .modal-table tr:hover {
             background-color: #f1f1f1;
         }
-
     </style>
 </head>
 <body>
@@ -276,11 +275,56 @@ include '../../public/includes/admin.php';
                 cells[4].innerHTML = `<input type="email" value="${cells[4].textContent.trim()}" id="branchEmail">`;
 
                 // Change the last cell to show save button
-                cells[5].innerHTML = `<button onclick="saveBranch(${branchID})">Save</button>`;
+                cells[5].innerHTML = `<button onclick="saveBranch(${branchID}, this)">Save</button>`;
             } else if (selected.length === 0) {
                 alert('Please select a branch to edit.');
             } else {
                 alert('Please select only one branch to edit.');
+            }
+        }
+
+        // Function to save the edited branch details
+        async function saveBranch(branchID, button) {
+            // Get updated values from the input fields
+            const branchName = document.getElementById('branchName').value;
+            const branchLocation = document.getElementById('branchLocation').value;
+            const branchContact = document.getElementById('branchContact').value;
+            const branchEmail = document.getElementById('branchEmail').value;
+
+            // Send the updated data to the server to save the changes
+            try {
+                const response = await fetch('branch-edit.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        branchID: branchID,
+                        branchName: branchName,
+                        branchLocation: branchLocation,
+                        branchContact: branchContact,
+                        branchEmail: branchEmail
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Branch updated successfully.');
+
+                    // Update the DOM with the new values
+                    const row = button.closest('tr');
+                    row.querySelector('td:nth-child(2)').textContent = branchName;
+                    row.querySelector('td:nth-child(3)').textContent = branchLocation;
+                    row.querySelector('td:nth-child(4)').textContent = branchContact;
+                    row.querySelector('td:nth-child(5)').textContent = branchEmail;
+
+                    // Change the save button back to the edit button
+                    row.querySelector('td:nth-child(6)').innerHTML = `<button onclick="editBranch()">Edit</button>`;
+                } else {
+                    alert('Failed to update the branch.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while saving the branch.');
             }
         }
 
