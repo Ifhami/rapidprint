@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['csv_file']) && $_FILE
     $successCount = 0;
     $errorCount = 0;
 
-    while (($data = fgetcsv($csvFile, 1000, ",")) !== FALSE) {
+    while (($data = fgetcsv($csvFile, length: 1000, ",")) !== FALSE) {
         list($full_name, $email, $password, $gender) = $data;
         $full_name = $conn->real_escape_string($full_name);
         $email = $conn->real_escape_string($email);
