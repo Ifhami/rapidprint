@@ -18,11 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['single_account'])) {
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $role = $conn->real_escape_string($_POST['role']);
     $gender = $conn->real_escape_string($_POST['gender']);
+    $registrationDate = $conn->real_escape_string($_POST['registrationDate']);
 
     // Set verification status based on role
     $verification_status = ($role === 'student') ? 'incomplete' : 'N/A';
 
-    $sql = "INSERT INTO user (full_name, email, password, role, verification_status, gender) VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO user (full_name, email, password, role, verification_status, gender, registrationDate) 
+        VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssssss", $full_name, $email, $password, $role, $verification_status, $gender);
 
