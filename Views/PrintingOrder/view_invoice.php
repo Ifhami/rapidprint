@@ -78,14 +78,14 @@ mysqli_close($conn);
             display: inline-block;
             margin: 20px 0;
             padding: 10px 15px;
-            background-color: #4CAF50;
+            background-color: black;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             text-align: center;
         }
         .btn-back:hover {
-            background-color: #45a049;
+            background-color: black;
         }
     </style>
 </head>
@@ -104,7 +104,7 @@ mysqli_close($conn);
     <h2>Items</h2>
     
 
-    <a href="invoices_list.php" class="btn-back">Back to Invoices</a>
+    <a href="ListOfInvoice.php" class="btn-back">Back to Invoices</a>
 </div>
 
 </body>
