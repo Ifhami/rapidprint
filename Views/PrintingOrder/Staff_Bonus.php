@@ -7,7 +7,7 @@ if (!$conn) {
     die("Database connection failed: " . mysqli_connect_error());
 }
 
-// Retrieve all staff
+// Fetches all staff members from the user table where the role is 'staff'.
 $staffQuery = "SELECT * FROM user WHERE role = 'staff'";
 $staffResult = mysqli_query($conn, $staffQuery);
 if (!$staffResult) {
@@ -17,13 +17,14 @@ if (!$staffResult) {
 // Initialize an array to store bonus data for display
 $bonusData = [];
 
-// Loop through all staff members
+// Loops through each staff member retrieved from the database.
 while ($staff = mysqli_fetch_assoc($staffResult)) {
     $staffId = $staff['UserID'];
 
     // Retrieve all orders for the staff member and calculate total points accumulated
     $orderQuery = "SELECT SUM(Points_Earned) AS total_points FROM `order` WHERE Staff_ID = $staffId";
-
+    
+    //Executes the query stored in $orderQuery on the database connection represented by $conn.
     $orderResult = mysqli_query($conn, $orderQuery);
     if (!$orderResult) {
         die("Order query failed: " . mysqli_error($conn));
@@ -46,13 +47,15 @@ while ($staff = mysqli_fetch_assoc($staffResult)) {
 
     // Insert or update the bonus in the staff_bonus table
     $dateRecorded = date('Y-m-d');
-
+    
+    
     $checkQuery = "SELECT * FROM staff_bonus WHERE Staff_ID = $staffId AND Date_Recorded = '$dateRecorded'";
     $checkResult = mysqli_query($conn, $checkQuery);
     if (!$checkResult) {
         die("Check query failed: " . mysqli_error($conn));
     }
-
+    
+    //If record exists: Updates the staff_bonus table with the calculated bonus and points.
     if (mysqli_num_rows($checkResult) > 0) {
         $updateQuery = "UPDATE staff_bonus SET Bonus_Amount = $bonusEarned, POINTS_ACCUMULATED = $totalPoints, BONUS_EARNED = $bonusEarned WHERE Staff_ID = $staffId AND Date_Recorded = '$dateRecorded'";
         mysqli_query($conn, $updateQuery);
