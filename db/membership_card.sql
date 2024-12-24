@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2024 at 02:37 AM
+-- Generation Time: Dec 21, 2024 at 11:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `membership_card` (
   `membership_ID` int(11) NOT NULL,
   `points` int(11) NOT NULL,
-  `qr_code` varchar(255) NOT NULL
+  `qr_code` varchar(255) NOT NULL,
+  `customerID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -41,7 +42,18 @@ CREATE TABLE `membership_card` (
 -- Indexes for table `membership_card`
 --
 ALTER TABLE `membership_card`
-  ADD PRIMARY KEY (`membership_ID`);
+  ADD PRIMARY KEY (`membership_ID`),
+  ADD KEY `fk_customerID` (`customerID`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `membership_card`
+--
+ALTER TABLE `membership_card`
+  ADD CONSTRAINT `fk_customerID` FOREIGN KEY (`customerID`) REFERENCES `customer` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

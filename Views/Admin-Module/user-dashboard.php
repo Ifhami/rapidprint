@@ -35,8 +35,8 @@ while ($row = $result->fetch_assoc()) {
 
 
 // Fetch student verification data for bar chart
-$verificationData = ["pending" => 0, "completed" => 0, "rejected" => 0];
-$verificationLabels = ["Pending", "Completed", "Rejected"];
+$verificationData = ["pending" => 0, "approved" => 0, "rejected" => 0];
+$verificationLabels = ["Pending", "approved", "Rejected"];
 $sql = "SELECT verification_status, COUNT(*) as count FROM user WHERE role = 'student' GROUP BY verification_status";
 $result = $conn->query($sql);
 while ($row = $result->fetch_assoc()) {

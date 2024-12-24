@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2024 at 02:36 AM
+-- Generation Time: Dec 23, 2024 at 10:30 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,12 +28,22 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `branch` (
-  `BranchID` int(11) NOT NULL,
-  `AdminID` int(11) NOT NULL,
-  `BranchLocation` varchar(255) DEFAULT NULL,
-  `BranchContact` varchar(50) DEFAULT NULL,
-  `BranchEmail` varchar(255) DEFAULT NULL
+  `branchID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `branch` varchar(255) NOT NULL,
+  `branchLocation` varchar(255) NOT NULL,
+  `branchContact` varchar(50) NOT NULL,
+  `branchEmail` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `branch`
+--
+
+INSERT INTO `branch` (`branchID`, `userID`, `branch`, `branchLocation`, `branchContact`, `branchEmail`) VALUES
+(6, 10, 'Gambang', 'UMPSA Gambang, Pahang', '0312345612', 'gambang@branch.com'),
+(7, 10, 'Pekan', 'UMPSA Pekan, Pahang', '0300165243', 'pekan@branch.com'),
+(9, 10, 'Kuantan', 'UMPSA Kuantan, Pahang', '0362537383', 'kuantan@branch.com');
 
 --
 -- Indexes for dumped tables
@@ -43,8 +53,18 @@ CREATE TABLE `branch` (
 -- Indexes for table `branch`
 --
 ALTER TABLE `branch`
-  ADD PRIMARY KEY (`BranchID`),
-  ADD KEY `AdminID` (`AdminID`);
+  ADD PRIMARY KEY (`branchID`),
+  ADD KEY `userID` (`userID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `branch`
+--
+ALTER TABLE `branch`
+  MODIFY `branchID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
@@ -54,7 +74,7 @@ ALTER TABLE `branch`
 -- Constraints for table `branch`
 --
 ALTER TABLE `branch`
-  ADD CONSTRAINT `branch_ibfk_1` FOREIGN KEY (`AdminID`) REFERENCES `admin` (`AdminID`);
+  ADD CONSTRAINT `branch_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

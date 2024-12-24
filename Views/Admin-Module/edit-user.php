@@ -97,7 +97,7 @@ $conn->close();
         <label for="verification_status" class="form-label">Verification Status</label>
         <select class="form-select" id="verification_status" name="verification_status">
             <option value="pending" <?php echo $verification_status === 'pending' ? 'selected' : ''; ?>>Pending</option>
-            <option value="completed" <?php echo $verification_status === 'completed' ? 'selected' : ''; ?>>Completed</option>
+            <option value="approved" <?php echo $verification_status === 'approved' ? 'selected' : ''; ?>>Approved</option>
             <option value="rejected" <?php echo $verification_status === 'rejected' ? 'selected' : ''; ?>>Rejected</option>
         </select>
     </div>
