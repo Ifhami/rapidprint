@@ -163,7 +163,7 @@ $conn->close();
                     <form action="user-profile.php" method="POST">
                         <div class="mb-3">
                             <label for="fullname" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo htmlspecialchars($full_name); ?>" required>
+                            <input type="text" class="form-control" id="fullname" name="full_name" value="<?php echo htmlspecialchars($full_name); ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
@@ -204,7 +204,7 @@ $conn->close();
                                 <?php elseif ($verification_status === 'rejected'): ?>
                                     <div class="alert alert-danger mt-3">Your proof got rejected. Please reupload.</div>
                                     <img src="../../public/Assets/rejected.png" alt="Rejected" class="img-fluid" style="max-width: 150px;">
-                                <?php elseif ($verification_status === 'completed' && $verification_proof): ?>
+                                <?php elseif ($verification_status === 'approved' && $verification_proof): ?>
                                     <div class="mt-3">
                                         <p>Current Uploaded Matric Card:</p>
                                         <img src="data:image/jpeg;base64,<?php echo base64_encode($verification_proof); ?>" alt="Student Matric Card" class="img-fluid" style="max-width: 200px; border: 1px solid #ddd; padding: 5px;">
