@@ -10,7 +10,7 @@ if ($_SESSION['role'] != 'admin') {
 }
 
 // Access stored session variables
-$user_id = $_SESSION['user_id'];
-$fullname = $_SESSION['fullname'];
+$user_id = $_SESSION['UserID'];
+$fullname = $_SESSION['full_name'];
 $role = $_SESSION['role'];
 ?>

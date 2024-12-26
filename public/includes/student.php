@@ -3,7 +3,7 @@ session_start();
 include '../../public/includes/db_connect.php';
 
 // Ensure the user is logged in and is a student
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'student') {
+if (!isset($_SESSION['UserID']) || $_SESSION['role'] != 'student') {
     echo "<script>
             alert('You do not have permission to access this page.');
             window.location.href = '../../Views/Login/login.php';
@@ -12,14 +12,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'student') {
 }
 
 // Access stored session variables
-$user_id = $_SESSION['user_id'];
-$fullname = $_SESSION['fullname'];
+$user_id = $_SESSION['UserID'];
+$fullname = $_SESSION['full_name'];
 $role = $_SESSION['role'];
 
 // Fetch the verification status from the database
-$sql = "SELECT verification_status FROM user WHERE id = ?";
+$sql = "SELECT verification_status FROM user WHERE UserID = ?";  
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("i", $UserID);  // Use $user_id instead of $UserID
 $stmt->execute();
 $stmt->bind_result($verification_status);
 $stmt->fetch();

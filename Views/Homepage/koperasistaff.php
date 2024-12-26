@@ -1,7 +1,12 @@
-<?php
-/* MODULE 2
+<!--  
+
+MODULE 2
 NUR IFHAMI BINTI MOHD SUHAIMIN
-CA21053*/
+CA21053 
+
+-->
+
+<?php
 // Include the database connection file and start session
 include '../../public/includes/db_connect.php';
 include '../../public/includes/staff.php';
@@ -34,7 +39,7 @@ include '../../public/includes/homepagename.php';
             position: relative;
             margin: 0;
         }
-        
+
         /* Overlay for dark gradient effect */
         .hero-section::before {
             content: "";
@@ -64,7 +69,8 @@ include '../../public/includes/homepagename.php';
         }
 
         /* Remove scrolling */
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -74,13 +80,13 @@ include '../../public/includes/homepagename.php';
 </head>
 
 <body>
-    
-<?php include '../../public/nav/staffnav.php'; ?> <!-- Include navbar -->
+
+    <?php include '../../public/nav/staffnav.php'; ?> <!-- Include navbar -->
 
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-content">
-            <h1 class="display-4">Welcome, <?php echo htmlspecialchars($fullname); ?></h1>
+            <h1 class="display-4">Welcome, <?php echo htmlspecialchars($full_name); ?></h1>
             <p class="lead">Remember, your only limit is the one you set yourself.</p>
         </div>
     </section>
@@ -92,6 +98,7 @@ include '../../public/includes/homepagename.php';
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../public/includes/timeout.js"></script>
 </body>
 
 </html>

@@ -1,49 +1,76 @@
 <?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Retrieve and sanitize form inputs
-  $email = $conn->real_escape_string($_POST['email']);
-  $password = $conn->real_escape_string($_POST['password']);
+include '../../public/includes/db_connect.php';
+session_start();
 
-  // Check if user exists in the database
-  $sql = "SELECT * FROM user WHERE email = '$email'";
-  $result = $conn->query($sql);
+// Initialize an error message variable
+$error_message = "";
 
-  if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Sanitize and validate user inputs
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    $password = trim($_POST['password']);
+    $role = trim($_POST['role']);
 
-    // Verify the password
-    if (password_verify($password, $user['upassword'])) {
-      // Start a session and set session variables
-      session_start();
-      $_SESSION['user_id'] = $user['id'];
-      $_SESSION['fullname'] = $user['fullname'];
-      $_SESSION['role'] = $user['role']; // Store user role in session
-
-      // Redirect based on user role
-      switch ($user['role']) {
-        case 'student':
-          header("Location: ../Homepage/student.php");
-          break;
-        case 'staff':
-          header("Location: ../Homepage/koperasistaff.php");
-          break;
-        case 'admin':
-          header("Location: ../Homepage/admin.php");
-          break;
-        default:
-          $error_message = "Invalid role. Please contact support.";
-          break;
-      }
-      exit;
+    // Check for empty fields
+    if (empty($email) || empty($password) || empty($role)) {
+        $error_message = "All fields are required.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = "Please enter a valid email address.";
     } else {
-      $error_message = "Incorrect password. Please try again.";
+        // Query to get user data based on email and role
+        $sql = "SELECT UserID, full_name, password, role FROM user WHERE email = ? AND role = ?";
+        $stmt = $conn->prepare($sql);
+
+        if ($stmt) {
+            $stmt->bind_param("ss", $email, $role);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $user = $result->fetch_assoc();
+
+                // Verify the password
+                if (password_verify($password, $user['password'])) {
+                    // Set session variables
+                    $_SESSION['UserID'] = $user['UserID'];
+                    $_SESSION['full_name'] = $user['full_name'];
+                    $_SESSION['role'] = $user['role'];
+
+                    // Redirect based on user role
+                    switch ($user['role']) {
+                        case 'student':
+                            header("Location: ../Homepage/student.php");
+                            break;
+                        case 'staff':
+                            header("Location: ../Homepage/koperasistaff.php");
+                            break;
+                        case 'admin':
+                            header("Location: ../Homepage/admin.php");
+                            break;
+                        default:
+                            $error_message = "Invalid role. Please contact support.";
+                            break;
+                    }
+                    exit;
+                } else {
+                    $error_message = "Invalid password. Please try again.";
+                }
+            } else {
+                $error_message = "No account found with the provided email and role.";
+            }
+
+            $stmt->close();
+        } else {
+            $error_message = "Error preparing the statement: " . $conn->error;
+        }
     }
-  } else {
-    $error_message = "No account found with that email address.";
-  }
 }
 
-// Close the database connection
 $conn->close();
 ?>

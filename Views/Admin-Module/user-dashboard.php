@@ -1,7 +1,12 @@
-<?php
-/* MODULE 2
+<!--  
+
+MODULE 2
 NUR IFHAMI BINTI MOHD SUHAIMIN
-CA21053*/
+CA21053 
+
+-->
+
+<?php
 // Include the database connection file and start session
 include '../../public/includes/db_connect.php';
 include '../../public/includes/admin.php';
@@ -30,8 +35,8 @@ while ($row = $result->fetch_assoc()) {
 
 
 // Fetch student verification data for bar chart
-$verificationData = ["pending" => 0, "completed" => 0, "rejected" => 0];
-$verificationLabels = ["Pending", "Completed", "Rejected"];
+$verificationData = ["pending" => 0, "approved" => 0, "rejected" => 0];
+$verificationLabels = ["Pending", "approved", "Rejected"];
 $sql = "SELECT verification_status, COUNT(*) as count FROM user WHERE role = 'student' GROUP BY verification_status";
 $result = $conn->query($sql);
 while ($row = $result->fetch_assoc()) {
@@ -229,6 +234,7 @@ while ($row = $result->fetch_assoc()) {
     <!-- Include Bootstrap JS and dependencies at the end of the body for interactive elements -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="../../public/includes/timeout.js"></script>
 
 
 </body>

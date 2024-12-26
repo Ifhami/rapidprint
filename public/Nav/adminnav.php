@@ -32,12 +32,14 @@ if (isset($_SESSION['role'])) {
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountRegistrationDropdown">
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/create-account.php">Create Account</a></li>
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/manage-account.php">Registered User</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Admin-Module/branch-updation.php">Branch Updation</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Admin-Module/package-updation.php">Package Updation</a></li>
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/user-dashboard.php">User Dashboard</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="../../Views/Admin-Module/approval.php">Proof Approval</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Services</a>
@@ -47,13 +49,14 @@ if (isset($_SESSION['role'])) {
                 </li>
 
                 <!-- User Dropdown -->
-                <?php if (isset($_SESSION['user_id'])): ?>
+                <?php if (isset($_SESSION['UserID'])): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user-circle"></i> <!-- Account Icon -->
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
                             <li><a class="dropdown-item" href="../../Views/Manage-User/user-profile.php">Manage Profile</a></li>
+                           
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

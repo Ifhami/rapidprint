@@ -1,56 +1,69 @@
 <?php
-/* MODULE 1
-*/
-// Include the database connection file
+/* MODULE 1 - Login Form */
 include '../../public/includes/db_connect.php';
+include '../../public/includes/loginAuth.php'; // Handles login logic
 
+<<<<<<< HEAD
 // Include Authentication Logic
 include '../../public/includes/loginAuth.php';
 
 
+=======
+// Ensure error_message is available
+if (!isset($error_message)) {
+    $error_message = "";
+}
+>>>>>>> 9a923ee48df99fe2797282564de4b8f7a3d076ff
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Form</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
-  <div class="wrapper">
-    <header>Login Form</header>
+    <div>
+        <h1>RAPIDPRINT SYSTEM</h1>
+    </div>
+    <br>
 
-    <!-- Display error message if login fails -->
+    <div>
+        <img src="../../public/Assets/login.png" alt="Login" class="login-image">
+    </div>
+
+    <!-- Display error message -->
     <?php if (!empty($error_message)): ?>
-      <div id="notification" style="padding: 10px; background-color: #dc3545; color: white; text-align: center;">
-        <?php echo $error_message; ?>
-      </div>
+        <p class="error"> <?php echo htmlspecialchars($error_message); ?> </p>
     <?php endif; ?>
 
-    <form action="login.php" method="post">
-      <div class="field email">
-        <div class="input-area">
-          <input type="text" placeholder="Email Address" name="email" required>
-          <i class="icon fas fa-envelope"></i>
-          <i class="error error-icon fas fa-exclamation-circle"></i>
-        </div>
-      </div>
-      <div class="field password">
-        <div class="input-area">
-          <input type="password" placeholder="Password" name="password" required>
-          <i class="icon fas fa-lock"></i>
-          <i class="error error-icon fas fa-exclamation-circle"></i>
-        </div>
-      </div>
-      <div class="pass-txt"><a href="../ForgotPassword/forgot-password.php">Forgot password?</a></div>
-      <input type="submit" value="Login">
-    </form>
-    <div class="sign-txt">Not yet a member? <a href="../Registration/registration.php">Signup now</a></div>
-  </div>
+    <div>
+        <form action="login.php" method="POST" id="loginForm">
+            <label for="email">Email Address</label>
+            <input type="text" id="email" name="email" placeholder="Email Address" required>
 
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+
+            <label for="role">Role</label>
+            <select id="role" name="role" required>
+                <option value="">- Select -</option>
+                <option value="admin">Admin</option>
+                <option value="student">Student</option>
+                <option value="staff">Staff</option>
+            </select>
+
+            <div class="form-buttons">
+                <button type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+    <br>
+
+    <a href="/Views/ForgotPassword/forgot-password.php">Forgot Password</a>
+    <script src="script.js"></script>
 </body>
 </html>

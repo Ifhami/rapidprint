@@ -1,12 +1,18 @@
-<?php
-/* MODULE 2
+<!--  
+
+MODULE 2
 NUR IFHAMI BINTI MOHD SUHAIMIN
-CA21053*/
+CA21053 
+
+-->
+
+
+<?php
 session_start();
 include '../../public/includes/db_connect.php';
 
 // Ensure the user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['UserID'])) {
     header("Location: ../../Views/Login/login.php");
     exit();
 }
@@ -15,12 +21,12 @@ if (!isset($_SESSION['user_id'])) {
 $user_role = $_SESSION['role'] ?? null;
 
 // Fetch user information from the database
-$user_id = $_SESSION['user_id'];
-$sql = "SELECT fullname, email, picture, verification_proof, verification_status, gender FROM user WHERE id = ?";
+$UserID = $_SESSION['UserID'];
+$sql = "SELECT full_name, email, picture, verification_proof, verification_status, gender FROM user WHERE UserID = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("i", $UserID);
 $stmt->execute();
-$stmt->bind_result($fullname, $email, $picture, $verification_proof, $verification_status, $gender);
+$stmt->bind_result($full_name, $email, $picture, $verification_proof, $verification_status, $gender);
 $stmt->fetch();
 $stmt->close();
 
@@ -28,9 +34,9 @@ $stmt->close();
 if (isset($_POST['update_picture'])) {
     if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 0) {
         $new_picture = file_get_contents($_FILES['profile_picture']['tmp_name']);
-        $update_sql = "UPDATE user SET picture = ? WHERE id = ?";
+        $update_sql = "UPDATE user SET picture = ? WHERE UserID = ?";
         $stmt = $conn->prepare($update_sql);
-        $stmt->bind_param("si", $new_picture, $user_id);
+        $stmt->bind_param("si", $new_picture, $UserID);
         if ($stmt->execute()) {
             echo "<script>alert('Profile picture updated successfully!'); window.location.href = 'user-profile.php';</script>";
         } else {
@@ -42,23 +48,23 @@ if (isset($_POST['update_picture'])) {
 
 // Handle user information update
 if (isset($_POST['update_info'])) {
-    $new_fullname = $_POST['fullname'];
+    $new_full_name = $_POST['full_name'];
     $new_email = $_POST['email'];
     $new_password = $_POST['password'];
     $new_gender = $_POST['gender'];
 
     if (!empty($new_password)) {
         $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
-        $update_sql = "UPDATE user SET fullname = ?, email = ?, upassword = ?, gender = ? WHERE id = ?";
+        $update_sql = "UPDATE user SET full_name = ?, email = ?, password = ?, gender = ? WHERE UserID = ?";
         $stmt = $conn->prepare($update_sql);
-        $stmt->bind_param("ssssi", $new_fullname, $new_email, $hashed_password, $new_gender, $user_id);
+        $stmt->bind_param("ssssi", $new_full_name, $new_email, $hashed_password, $new_gender, $UserID);
     } else {
-        $update_sql = "UPDATE user SET fullname = ?, email = ?, gender = ? WHERE id = ?";
+        $update_sql = "UPDATE user SET full_name = ?, email = ?, gender = ? WHERE UserID = ?";
         $stmt = $conn->prepare($update_sql);
-        $stmt->bind_param("sssi", $new_fullname, $new_email, $new_gender, $user_id);
+        $stmt->bind_param("sssi", $new_full_name, $new_email, $new_gender, $UserID);
     }
     if ($stmt->execute()) {
-        $_SESSION['fullname'] = $new_fullname;
+        $_SESSION['full_name'] = $new_full_name;
         echo "<script>alert('Profile information updated successfully!'); window.location.href = 'user-profile.php';</script>";
     } else {
         echo "<script>alert('Error updating profile information. Please try again.');</script>";
@@ -71,9 +77,9 @@ if (isset($_POST['update_verification']) && $user_role === 'student') { // Only 
     if (isset($_FILES['verification_proof']) && $_FILES['verification_proof']['error'] == 0) {
         $file_data = file_get_contents($_FILES['verification_proof']['tmp_name']);
         // Set verification_status to "pending" when verification proof is uploaded
-        $update_sql = "UPDATE user SET verification_proof = ?, verification_status = 'pending' WHERE id = ?";
+        $update_sql = "UPDATE user SET verification_proof = ?, verification_status = 'pending' WHERE UserID = ?";
         $stmt = $conn->prepare($update_sql);
-        $stmt->bind_param("si", $file_data, $user_id);
+        $stmt->bind_param("si", $file_data, $UserID);
         if ($stmt->execute()) {
             echo "<script>alert('Verification proof uploaded successfully and is now pending approval.'); window.location.href = 'user-profile.php';</script>";
         } else {
@@ -157,7 +163,7 @@ $conn->close();
                     <form action="user-profile.php" method="POST">
                         <div class="mb-3">
                             <label for="fullname" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" required>
+                            <input type="text" class="form-control" id="fullname" name="full_name" value="<?php echo htmlspecialchars($full_name); ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
@@ -198,7 +204,7 @@ $conn->close();
                                 <?php elseif ($verification_status === 'rejected'): ?>
                                     <div class="alert alert-danger mt-3">Your proof got rejected. Please reupload.</div>
                                     <img src="../../public/Assets/rejected.png" alt="Rejected" class="img-fluid" style="max-width: 150px;">
-                                <?php elseif ($verification_status === 'completed' && $verification_proof): ?>
+                                <?php elseif ($verification_status === 'approved' && $verification_proof): ?>
                                     <div class="mt-3">
                                         <p>Current Uploaded Matric Card:</p>
                                         <img src="data:image/jpeg;base64,<?php echo base64_encode($verification_proof); ?>" alt="Student Matric Card" class="img-fluid" style="max-width: 200px; border: 1px solid #ddd; padding: 5px;">
@@ -216,6 +222,7 @@ $conn->close();
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../public/includes/timeout.js"></script>
 </body>
 
 </html>

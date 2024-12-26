@@ -1,10 +1,15 @@
-<?php
-/* MODULE 2
+<!--  
+
+MODULE 2
 NUR IFHAMI BINTI MOHD SUHAIMIN
-CA21053*/
+CA21053 
+
+-->
+
+<?php
 // Include the database connection file and start session
 include '../../public/includes/db_connect.php';
-include '../../public/includes/staff.php';
+include '../../public/includes/admin.php';
 
 // Set the number of rows per page
 $rows_per_page = 3; // Changed to 3
@@ -12,7 +17,7 @@ $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] :
 $offset = ($page - 1) * $rows_per_page;
 
 // Fetch students with pending verification, limited to rows per page
-$sql = "SELECT id, fullname, verification_proof FROM user WHERE role = 'student' AND verification_status = 'pending' LIMIT $rows_per_page OFFSET $offset";
+$sql = "SELECT UserID, full_name, verification_proof FROM user WHERE role = 'student' AND verification_status = 'pending' LIMIT $rows_per_page OFFSET $offset";
 $result = $conn->query($sql);
 
 // Get the total count of pending students for pagination
@@ -24,17 +29,17 @@ $total_pages = ceil($total_rows / $rows_per_page);
 
 // Handle bulk approval/rejection actions
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_students'])) {
-    $student_ids = $_POST['selected_students'];
+    $UserID = $_POST['selected_students'];
     $action = $_POST['bulk_action'];
 
     if ($action === 'accept') {
-        $update_sql = "UPDATE user SET verification_status = 'completed' WHERE id IN (" . implode(',', array_fill(0, count($student_ids), '?')) . ")";
+        $update_sql = "UPDATE user SET verification_status = 'approved' WHERE UserID IN (" . implode(',', array_fill(0, count($UserID), '?')) . ")";
     } elseif ($action === 'reject') {
-        $update_sql = "UPDATE user SET verification_proof = NULL, verification_status = 'rejected' WHERE id IN (" . implode(',', array_fill(0, count($student_ids), '?')) . ")";
+        $update_sql = "UPDATE user SET verification_proof = NULL, verification_status = 'rejected' WHERE UserID IN (" . implode(',', array_fill(0, count($UserID), '?')) . ")";
     }
 
     $stmt = $conn->prepare($update_sql);
-    $stmt->bind_param(str_repeat("i", count($student_ids)), ...$student_ids);
+    $stmt->bind_param(str_repeat("i", count($UserID)), ...$UserID);
     $stmt->execute();
     $stmt->close();
 
@@ -61,14 +66,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_students'])) 
             max-height: 150px;
             border: 1px solid #ddd;
             padding: 5px;
-            object-fit: cover;
+            object-fit: contain;
         }
     </style>
 </head>
 
 <body>
 
-    <?php include '../../public/nav/staffnav.php'; ?>
+    <?php include '../../public/nav/adminnav.php'; ?>
 
     <div class="container mt-5">
         <h2 class="mb-4 text-center">Student Card Approval</h2>
@@ -88,9 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_students'])) 
                             <?php while ($row = $result->fetch_assoc()): ?>
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="selected_students[]" value="<?php echo $row['id']; ?>" class="select-student">
+                                        <input type="checkbox" name="selected_students[]" value="<?php echo $row['UserID']; ?>" class="select-student">
                                     </td>
-                                    <td><?php echo htmlspecialchars($row['fullname']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['full_name']); ?></td>
                                     <td>
                                         <?php if ($row['verification_proof']): ?>
                                             <img src="data:image/jpeg;base64,<?php echo base64_encode($row['verification_proof']); ?>" alt="Verification Proof" class="verification-image">
@@ -148,6 +153,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_students'])) 
             checkboxes.forEach(checkbox => checkbox.checked = selectAll.checked);
         }
     </script>
+
+    <script src="../../public/includes/timeout.js"></script>
 </body>
 
 </html>
