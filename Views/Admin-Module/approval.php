@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_students'])) 
             max-height: 150px;
             border: 1px solid #ddd;
             padding: 5px;
-            object-fit: cover;
+            object-fit: contain;
         }
     </style>
 </head>
