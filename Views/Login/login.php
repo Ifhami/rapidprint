@@ -3,10 +3,17 @@
 include '../../public/includes/db_connect.php';
 include '../../public/includes/loginAuth.php'; // Handles login logic
 
+<<<<<<< HEAD
+// Include Authentication Logic
+include '../../public/includes/loginAuth.php';
+
+
+=======
 // Ensure error_message is available
 if (!isset($error_message)) {
     $error_message = "";
 }
+>>>>>>> 9a923ee48df99fe2797282564de4b8f7a3d076ff
 ?>
 
 <!DOCTYPE html>

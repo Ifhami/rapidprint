@@ -101,6 +101,7 @@ $orders = mysqli_query($conn, "SELECT * FROM `order`");
                                 <td><?php echo $order['Payment_Method']; ?></td>
                                 <td>
                                     <!-- Update Form -->
+                                     
                                     <form method="POST" class="d-inline">
                                         <input type="hidden" name="Order_ID" value="<?php echo $order['Order_ID']; ?>">
                                         <select name="Status" class="form-select form-select-sm mb-2">
