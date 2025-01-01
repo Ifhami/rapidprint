@@ -29,14 +29,12 @@ if (isset($_SESSION['role'])) {
                     <a class="nav-link" href="../../Views/Homepage/student.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="../../Views/Student-Module/student-dashboard.php">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
+                    <a class="nav-link" href="../../Views/Student-Module/membership-card.php">Membership</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
+
                 <!-- User Dropdown -->
                 <?php if (isset($_SESSION['UserID'])): ?>
                     <li class="nav-item dropdown">

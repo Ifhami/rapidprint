@@ -14,7 +14,7 @@ if (isset($_POST['apply_card'])) {
     $qr_code = uniqid("RP_");
     $points = 0;
 
-    $sql = "INSERT INTO membership_card (membership_ID, points, qr_code, customerID) VALUES (NULL, ?, ?, ?)";
+    $sql = "INSERT INTO membership_card (points, qr_code, customerID) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("isi", $points, $qr_code, $customerID);
 
@@ -63,6 +63,7 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<?php include '../../public/includes/navLogic.php'; ?>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Membership Card</h1>
 
@@ -80,12 +81,12 @@ $conn->close();
                 <p><strong>Membership ID:</strong> <?php echo $membership_ID; ?></p>
                 <p><strong>Points:</strong> <?php echo $points; ?></p>
                 <p><strong>QR Code:</strong> <?php echo $qr_code; ?></p>
-                <form action="membership_card.php" method="POST">
+                <form action="membership-card.php" method="POST">
                     <button type="submit" name="cancel_card" class="btn btn-danger">Cancel Membership Card</button>
                 </form>
             <?php else: ?>
                 <h5 class="card-title">Apply for Membership</h5>
-                <form action="membership_card.php" method="POST">
+                <form action="membership-card.php" method="POST">
                     <button type="submit" name="apply_card" class="btn btn-primary">Apply for Membership Card</button>
                 </form>
             <?php endif; ?>
