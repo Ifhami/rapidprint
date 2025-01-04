@@ -1,8 +1,11 @@
 <?php
-// LIST OF INVOICE
-// Connect to the database
+// STAFF BONUS
 include '../../public/includes/db_connect.php';
 
+// Check database connection
+if (!$conn) {
+    die("Database connection failed: " . mysqli_connect_error());
+}
 // Function to fetch invoices from the database
 function getInvoices() {
     global $conn;
@@ -59,6 +62,10 @@ $invoices = getInvoices();
     </style>
 </head>
 <body class="bg-light">
+
+<?php include '../../public/nav/staffnav.php'; ?> <!-- Include navbar -->
+
+<!-- Main Content -->
 <div class="container">
     <h1 class="text-center text-primary my-4">Invoice List</h1>
 
@@ -101,16 +108,10 @@ $invoices = getInvoices();
             <p class="text-center text-muted">No invoices found.</p>
         <?php endif; ?>
     </div>
-
-    <?php if (isset($_GET['delete'])): ?>
-        <div class="alert alert-success mt-4 text-center" role="alert">
-            Invoice has been deleted successfully.
-        </div>
-    <?php endif; ?>
 </div>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
-

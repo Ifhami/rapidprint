@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     $orderId = $_POST['Order_ID'];
     $newStatus = $_POST['Status'];
 
-    // Update query with backticks for the table name
+    // Update query
     $sql = "UPDATE `order` SET status='$newStatus' WHERE Order_ID=$orderId";
 
     if (mysqli_query($conn, $sql)) {
@@ -18,9 +18,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     }
 }
 
-// Fetch all orders with backticks for the table name
-$orders = mysqli_query($conn, "SELECT * FROM `order`");
+// Fetch all orders with JOIN to include PaymentMethod from the payment table
+$orders = mysqli_query(
+    $conn,
+    "SELECT o.Order_ID, o.CustomerID, o.Staff_ID, o.Status, o.Order_Date, o.Points_Earned, p.PaymentMethod 
+     FROM `order` AS o
+     LEFT JOIN `payment` AS p ON o.Order_ID = p.Order_ID"
+);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +37,7 @@ $orders = mysqli_query($conn, "SELECT * FROM `order`");
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color:  white;
+            background-color: white;
         }
         .container {
             margin-top: 50px;
@@ -59,6 +65,7 @@ $orders = mysqli_query($conn, "SELECT * FROM `order`");
     </style>
 </head>
 <body>
+<?php include '../../public/nav/staffnav.php'; ?> <!-- Include navbar -->
 <div class="container">
     <h1 class="text-center text-primary mb-4">Update Order Status</h1>
 
@@ -98,10 +105,9 @@ $orders = mysqli_query($conn, "SELECT * FROM `order`");
                                 <td><?php echo $order['Status']; ?></td>
                                 <td><?php echo $order['Order_Date']; ?></td>
                                 <td><?php echo $order['Points_Earned']; ?></td>
-                                <td><?php echo $order['Payment_Method']; ?></td>
+                                <td><?php echo $order['PaymentMethod'] ?: 'Not Available'; ?></td>
                                 <td>
                                     <!-- Update Form -->
-                                     
                                     <form method="POST" class="d-inline">
                                         <input type="hidden" name="Order_ID" value="<?php echo $order['Order_ID']; ?>">
                                         <select name="Status" class="form-select form-select-sm mb-2">

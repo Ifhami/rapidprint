@@ -1,5 +1,6 @@
 <?php
 
+
 // Check if the user has a role and set the homepage link accordingly
 if (isset($_SESSION['role'])) {
     switch ($_SESSION['role']) {
@@ -12,7 +13,13 @@ if (isset($_SESSION['role'])) {
         case 'admin':
             $homepageLink = '../../Views/Homepage/admin.php';
             break;
+        default:
+            $homepageLink = '../../Views/Login/login.php'; // Default fallback
+            break;
     }
+} else {
+    // Default to login page if no session role is set
+    $homepageLink = '../../Views/Login/login.php';
 }
 ?>
 
@@ -26,13 +33,26 @@ if (isset($_SESSION['role'])) {
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="<?php echo $homepageLink; ?>">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Services
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                        <li><a class="dropdown-item" href="../../Views/PrintingOrder/ListOfInvoice.php">List of Invoices</a></li>
+                        
+                            <li><a class="dropdown-item" href="../../Views/PrintingOrder/Staff_Bonus.php">Staff Bonus Management</a></li>
+                            <li><a class="dropdown-item" href="../../Views/PrintingOrder/UpdateOrderStatus.php">Update Order Status</a></li>
+                            <li><a class="dropdown-item" href="../../Views/staffDashboard.php">Staff Dashboard</a></li>
+                        
+                    </ul>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#">Example</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
@@ -62,3 +82,6 @@ if (isset($_SESSION['role'])) {
 
 <!-- Include Font Awesome for the user icon -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- Include Bootstrap JS for dropdown functionality -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

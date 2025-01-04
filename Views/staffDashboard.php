@@ -14,13 +14,13 @@ $totalPointsResult = mysqli_query($conn, $totalPointsQuery);
 $totalPoints = mysqli_fetch_assoc($totalPointsResult)['Points_Earned'];
 
 // Payment Method Breakdown
-$paymentBreakdownQuery = "SELECT Payment_Method, COUNT(*) AS count FROM `order` GROUP BY Payment_Method";
+$paymentBreakdownQuery = "SELECT PaymentMethod, COUNT(*) AS count FROM `payment` GROUP BY PaymentMethod";
 $paymentBreakdownResult = mysqli_query($conn, $paymentBreakdownQuery);
 
 $paymentMethods = [];
 $paymentCounts = [];
 while ($row = mysqli_fetch_assoc($paymentBreakdownResult)) {
-    $paymentMethods[] = $row['Payment_Method'];
+    $paymentMethods[] = $row['PaymentMethod'];
     $paymentCounts[] = $row['count'];
 }
 
@@ -57,6 +57,7 @@ mysqli_close($conn);
     </style>
 </head>
 <body>
+<?php include '../public/nav/staffnav.php'; ?> <!-- Include navbar -->
 <div class="container">
     <h1>Staff Dashboard</h1>
 
