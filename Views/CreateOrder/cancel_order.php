@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php'; // Include your database connection
+include '../../public/includes/db_connect.php';
 
 // Check if the user is logged in
 if (!isset($_SESSION['UserID'])) {
@@ -35,14 +35,21 @@ if (isset($_GET['orderID'])) {
                 // Update the status to 'Cancelled' instead of deleting the order
                 $cancelSql = "UPDATE `Order` SET Status = 'Cancelled' WHERE Order_ID = '$orderID'";
                 if ($conn->query($cancelSql) === TRUE) {
-                    // Redirect to orders page with success message
-                    header("Location: vieworders.php?message=Order+cancelled+successfully");
+                    // Display a success message and redirect to historyorders.php
+                    echo "<script>
+                            alert('Order cancelled successfully.');
+                            window.location.href = 'historyorders.php';
+                          </script>";
                     exit;
                 } else {
                     echo "Error: " . $conn->error;
                 }
             } else {
-                echo "You cannot cancel an order after 1 hour.";
+                // Display a message when order can't be cancelled
+                echo "<script>
+                        alert('You cannot cancel an order after 1 hour.');
+                        window.location.href = 'historyorders.php';
+                      </script>";
             }
         } else {
             echo "The order status is not 'Pending' and cannot be cancelled.";

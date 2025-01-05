@@ -76,10 +76,9 @@ if ($result_package->num_rows > 0) {
     </style>
 </head>
 <body>
-    <?php include '../../public/includes/navLogic.php'; ?>
-
     <div class="container">
         <h2>Create Order</h2>
+
         <!-- Display Package Name and Price -->
         <div class="form-group">
             <label>Package Selected: </label>
@@ -87,7 +86,7 @@ if ($result_package->num_rows > 0) {
             <label>Price: </label>
             <p>RM <?php echo number_format($package['Price'], 2); ?></p>
         </div>
-        
+
         <!-- Form to Create Order -->
         <form method="POST" action="submitorder.php?Package_ID=<?php echo $packageID; ?>" enctype="multipart/form-data">
             <!-- File Upload -->
@@ -144,10 +143,22 @@ if ($result_package->num_rows > 0) {
                 <textarea name="remarks"></textarea>
             </div>
 
-            <!-- Submit Button -->
-            <div class="form-group">
-                <button type="submit">Create Order</button>
+            <!-- Button Container -->
+            <div class="button-container">
+                <!-- Back Button -->
+                <div class="form-group">
+                    <a href="viewpackages.php" class="back-button">
+                        <button type="button">Back to Packages</button>
+                    </a>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit">Create Order</button>
+                </div>
             </div>
+
         </form>
     </div>
 </body>
+</html>

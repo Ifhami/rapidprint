@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php'; // Include your database connection
+include '../../public/includes/db_connect.php';
 
 // Check if the user is logged in
 if (!isset($_SESSION['UserID'])) {
@@ -68,13 +68,18 @@ if ($result->num_rows > 0) {
             background-color: #f9f9f9;
         }
         .btn {
-            padding: 8px 16px;
+            display: inline-block;
+            width: 100%; /* Ensures buttons are the same width */
+            padding: 10px 16px;
             background-color: #3498db;
             color: white;
             border: none;
             border-radius: 5px;
             text-decoration: none;
             font-weight: 500;
+            text-align: center;
+            margin: 5px 0; /* Adds spacing between buttons */
+            box-sizing: border-box;
         }
         .btn:hover {
             background-color: #2980b9;
@@ -95,17 +100,18 @@ if ($result->num_rows > 0) {
         .modify-btn:hover {
             background-color: #e67e22;
         }
+        .payment-btn {
+            background-color: #2ecc71; /* Green color */
+        }
+        .payment-btn:hover {
+            background-color: #27ae60; /* Darker green when hovered */
+        }
         .action-buttons {
             display: flex;
+            flex-direction: column; /* Stack the buttons vertically */
             justify-content: space-between;
-            align-items: center;
-        }
-        .action-buttons a {
-            flex: 1;
-            text-align: center;
-        }
-        .modify-btn {
-            margin-right: 10px;
+            align-items: stretch; /* Ensure buttons take the full width */
+            gap: 10px; /* Adds spacing between buttons */
         }
     </style>
 </head>
@@ -137,15 +143,19 @@ if ($result->num_rows > 0) {
                             ?>
 
                             <?php if ($order['Status'] == 'Ordered'): ?>
-                                <a href="viewpayment.php?orderID=<?php echo $order['Order_ID']; ?>" class="btn">Payment Details</a>
+                                <a href="viewpayment.php?orderID=<?php echo $order['Order_ID']; ?>" class="btn">Details</a>
                             <?php elseif ($order['Status'] == 'Pending'): ?>
                                 <div class="action-buttons">
                                     <!-- Modify button on the left side -->
                                     <?php if ($timeDifference <= 3600): ?>
                                         <a href="modify_order.php?orderID=<?php echo $order['Order_ID']; ?>" class="btn modify-btn">Modify Order</a>
                                     <?php endif; ?>
-                                    <!-- Cancel button on the right side -->
-                                    <a href="cancel_order.php?orderID=<?php echo $order['Order_ID']; ?>" class="btn cancel-btn">Cancel Order</a>
+                                    <!-- Cancel button on the right side (only if within 1 hour) -->
+                                    <?php if ($timeDifference <= 3600): ?>
+                                        <a href="cancel_order.php?orderID=<?php echo $order['Order_ID']; ?>" class="btn cancel-btn">Cancel Order</a>
+                                    <?php endif; ?>
+                                    <!-- Payment button if the order is "Pending" -->
+                                    <a href="payment.php?orderID=<?php echo $order['Order_ID']; ?>" class="btn payment-btn">Payment</a>
                                 </div>
                             <?php endif; ?>
                         </td>

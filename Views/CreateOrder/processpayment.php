@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php'; // Include your database connection
+include '../../public/includes/db_connect.php';
 
 // Check if the user is logged in
 if (!isset($_SESSION['UserID'])) {
@@ -22,16 +22,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    // Generate Payment ID (6 digits with prefix 'PM')
+    // Query to get the last Payment_ID number
     $sql_last_payment = "SELECT MAX(Payment_ID) AS last_id FROM `Payment`";
     $result = $conn->query($sql_last_payment);
-    $row = $result->fetch_assoc();
-    $last_id = intval(substr($row['last_id'], 2)) + 1;
-    $paymentID = 'PM' . str_pad($last_id, 6, '0', STR_PAD_LEFT);
+    
+    // Default starting ID if no payments exist
+    $paymentID = 1; // Default first payment ID
 
-    // Insert the payment record into Payment table
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $last_id = $row['last_id'];
+        
+        // If there is a valid last ID, increment it
+        if ($last_id !== null) {
+            $paymentID = $last_id + 1;
+        }
+    }
+
+    // Insert the payment record into the Payment table
     $sql_insert_payment = "INSERT INTO `Payment` (Payment_ID, Order_ID, Payment_Method, Payment_Date, Pay_Status)
-                           VALUES ('$paymentID', '$orderID', '$payment_method', NOW(), 'Completed')";
+                           VALUES ($paymentID, '$orderID', '$payment_method', NOW(), 'Completed')";
 
     if ($conn->query($sql_insert_payment) === TRUE) {
         // Update the order status to 'Ordered'
