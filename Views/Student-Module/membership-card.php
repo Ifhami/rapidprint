@@ -133,7 +133,7 @@ $conn->close();
                 if (file_exists('../../public/includes/phpqrcode.php')) {
                     include '../../public/includes/phpqrcode.php';
                     try {
-                        $base_url = '../../Views/Student-Module/membership-details.php';
+                        $base_url = "../../Views/Student-Module/membership-details.php";
                         $qr_data = $base_url . "?membership_ID=" . urlencode($membership_ID);
                         
                         $qr_image_path = '../../public/qr_codes/' . $qr_code . '.png'; // Define QR code image path
