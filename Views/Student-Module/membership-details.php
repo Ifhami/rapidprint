@@ -14,10 +14,8 @@ if (isset($_GET['membership_id'])) {
     if ($result->num_rows > 0) {
         $membership = $result->fetch_assoc();
         // Display membership details
-        echo "<h1>Membership Details</h1>";
-        echo "<p><strong>Membership ID:</strong> " . $membership['membership_ID'] . "</p>";
         echo "<p><strong>Points:</strong> " . $membership['points'] . "</p>";
-        echo "<p><strong>Balance:</strong> $" . number_format($membership['balance'], 2) . "</p>";
+
     } else {
         echo "<p>Invalid membership ID.</p>";
     }

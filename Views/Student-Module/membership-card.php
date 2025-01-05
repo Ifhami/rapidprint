@@ -13,6 +13,63 @@ if (!isset($_SESSION['UserID']) || $_SESSION['role'] !== 'student') {
 
 $UserID = $_SESSION['UserID'];
 
+// Only check verification status when the user tries to apply for the membership card
+if (isset($_POST['apply_card'])) {
+    // Fetch user verification status and proof
+    $sql = "SELECT verification_status, verification_proof FROM user WHERE UserID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $UserID);
+    $stmt->execute();
+    $stmt->bind_result($verification_status, $verification_proof);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Prevent users with non-approved status or missing proof from applying
+    if ($verification_status !== 'approved' || empty($verification_proof)) {
+        $error = "You must have an approved verification status and provide verification proof to apply for a membership card.";
+    } else {
+        // Prevent further execution if verification fails
+        if (isset($error)) {
+            // Output the error and prevent further processing
+            echo "<div class='alert alert-danger'>$error</div>";
+            return;  // Stop further execution if error exists
+        }
+
+        // Check if the user already has a membership card
+        $sql_check = "SELECT membership_ID FROM membership_card WHERE CustomerID = ?";
+        $stmt_check = $conn->prepare($sql_check);
+        $stmt_check->bind_param("i", $UserID);
+        $stmt_check->execute();
+        $stmt_check->store_result();
+
+        if ($stmt_check->num_rows > 0) {
+            $error = "You already have a membership card.";
+            echo "<div class='alert alert-danger'>$error</div>";  // Display error
+        } else {
+            // Apply for membership card
+            $qr_code = uniqid("RP_");
+            $points = 0;
+            $balance = 0.00;
+
+            $sql_insert = "INSERT INTO membership_card (points, qr_code, balance, CustomerID) VALUES (?, ?, ?, ?)";
+            $stmt_insert = $conn->prepare($sql_insert);
+            $stmt_insert->bind_param("isdi", $points, $qr_code, $balance, $UserID);
+
+            if ($stmt_insert->execute()) {
+                $success = "Membership card created successfully! You can view your QR Code on the dashboard.";
+                echo "<div class='alert alert-success'>$success</div>";  // Display success
+            } else {
+                $error = "Error creating membership card. Please try again.";
+                echo "<div class='alert alert-danger'>$error</div>";  // Display error
+            }
+            $stmt_insert->close();
+        }
+        $stmt_check->close();
+    }
+}
+
+
+
 // Initialize balance variable (this will be fetched from the database later)
 $balance = 0.00; // Default balance
 
@@ -32,7 +89,21 @@ if (isset($_POST['apply_card'])) {
     }
     $stmt->close();
 }
+// Handle card cancellation
+if (isset($_POST['cancel_card'])) {
+    $CustomerID = $_SESSION['UserID'];
 
+    $sql = "DELETE FROM membership_card WHERE CustomerID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $CustomerID);
+
+    if ($stmt->execute()) {
+        $success = "Membership card canceled successfully.";
+    } else {
+        $error = "Error canceling membership card. Please try again.";
+    }
+    $stmt->close();
+}
 // Handle adding money to the card
 if (isset($_POST['add_money'])) {
     $amount = floatval($_POST['amount']); // Get the amount to add
@@ -127,13 +198,13 @@ $conn->close();
                 <h5 class="card-title">Membership Details</h5>
                 <p><strong>Membership ID:</strong> <?php echo $membership_ID; ?></p>
                 <p><strong>Points:</strong> <?php echo $points; ?></p>
-                <p><strong>Balance:</strong> $<?php echo number_format($balance, 2); ?></p>
+                <p><strong>Balance:</strong> RM<?php echo number_format($balance, 2); ?></p>
                 <p><strong>QR Code:</strong></p>
                 <?php
                 if (file_exists('../../public/includes/phpqrcode.php')) {
                     include '../../public/includes/phpqrcode.php';
                     try {
-                        $base_url = "../../Views/Student-Module/membership-details.php";
+                        $base_url = "htttp:/localhost/Views/Student-Module/membership-details.php";
                         $qr_data = $base_url . "?membership_ID=" . urlencode($membership_ID);
                         
                         $qr_image_path = '../../public/qr_codes/' . $qr_code . '.png'; // Define QR code image path
@@ -159,6 +230,9 @@ $conn->close();
                         <input type="number" step="0.01" name="amount" class="form-control" placeholder="Enter amount" required>
                         <button type="submit" name="add_money" class="btn btn-primary">Add Money</button>
                     </div>
+                </form>
+                <form action="membership-card.php" method="POST">
+                    <button type="submit" name="cancel_card" class="btn btn-danger">Cancel Membership Card</button>
                 </form>
             <?php else: ?>
                 <h5 class="card-title">Apply for Membership</h5>
