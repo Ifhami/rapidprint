@@ -24,6 +24,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_membership']))
     $stmt_cancel->close();
 }
 
+// Handle Add Money Request
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_money'])) {
+    $payment_method = $_POST['payment_method'];
+    $amount = floatval($_POST['amount']);
+
+    if ($amount <= 0) {
+        $payment_error = "Please enter a valid amount.";
+    } else {
+        if ($payment_method === 'cash') {
+            // Handle cash payment: directly update balance
+            $stmt_update = $conn->prepare("UPDATE membership_card SET balance = balance + ? WHERE CustomerID = ?");
+            $stmt_update->bind_param("di", $amount, $UserID);
+            
+            if ($stmt_update->execute()) {
+                $payment_success = "Balance updated successfully with cash payment!";
+            } else {
+                $payment_error = "Error updating balance. Please try again.";
+            }
+            $stmt_update->close();
+        } elseif (in_array($payment_method, ['bsn', 'rhb', 'maybank'])) {
+            // Handle online banking: simulate payment and provide confirmation step
+            $bank_urls = [
+                'bsn' => 'https://www.mybsn.com.my/mybsn/login/login.do',
+                'rhb' => 'https://onlinebanking.rhbgroup.com/my/login',
+                'maybank' => 'https://www.maybank2u.com.my/home/m2u/common/login.do',
+            ];
+            $bank_name = ucfirst($payment_method);
+            $confirm_payment_link = "Please complete your payment on $bank_name Online Banking. Once done, confirm your payment here.";
+            $payment_success = "<a href='{$bank_urls[$payment_method]}' target='_blank' class='btn btn-link'>Proceed to {$bank_name}</a>";
+        }
+    }
+}
+
+// Handle Online Banking Confirmation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
+    $amount = floatval($_POST['confirm_amount']);
+
+    $stmt_update = $conn->prepare("UPDATE membership_card SET balance = balance + ? WHERE CustomerID = ?");
+    $stmt_update->bind_param("di", $amount, $UserID);
+    
+    if ($stmt_update->execute()) {
+        $payment_success = "Balance updated successfully after online banking payment!";
+    } else {
+        $payment_error = "Error updating balance. Please try again.";
+    }
+    $stmt_update->close();
+}
+
+// Update points in membership_card by summing points from order table
+$stmt_points = $conn->prepare("
+    SELECT COALESCE(SUM(points_earned), 0) AS total_points 
+    FROM `order` 
+    WHERE CustomerID = ?
+");
+
+$stmt_points->bind_param("i", $UserID);
+$stmt_points->execute();
+$stmt_points->bind_result($total_points);
+$stmt_points->fetch();
+$stmt_points->close();
+
+// Update membership_card with calculated points
+$stmt_update_points = $conn->prepare("
+    UPDATE membership_card 
+    SET points = ? 
+    WHERE CustomerID = ?
+");
+$stmt_update_points->bind_param("ii", $total_points, $UserID);
+$stmt_update_points->execute();
+$stmt_update_points->close();
+
 // Fetch user and membership details
 $stmt_user = $conn->prepare("SELECT full_name, email, gender FROM user WHERE UserID = ?");
 $stmt_user->bind_param("i", $UserID);
@@ -90,6 +161,40 @@ $stmt_history->close();
         </div>
     </div>
 
+<!-- Add Money to Membership Balance Section -->
+<div class="card shadow-sm mt-4">
+    <div class="card-body">
+        <h2 class="card-title">Add Money to Membership Balance</h2>
+        <?php if (isset($payment_error)) echo "<div class='alert alert-danger'>$payment_error</div>"; ?>
+        <?php if (isset($payment_success)) echo "<div class='alert alert-success'>$payment_success</div>"; ?>
+        
+        <!-- Payment Method Form -->
+        <form method="POST">
+            <div class="mb-3">
+                <label for="payment_method" class="form-label">Payment Method</label>
+                <select name="payment_method" id="payment_method" class="form-select" required>
+                    <option value="cash">Cash</option>
+                    <option value="bsn">BSN Online Banking</option>
+                    <option value="rhb">RHB Online Banking</option>
+                    <option value="maybank">Maybank Online Banking</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount to Add (RM)</label>
+                <input type="number" step="0.01" name="amount" id="amount" class="form-control" required>
+            </div>
+            <button type="submit" name="add_money" class="btn btn-primary">Proceed to Payment</button>
+        </form>
+        
+        <!-- Confirm Online Banking Payment -->
+        <?php if (isset($confirm_payment_link)): ?>
+            <form method="POST">
+                <input type="hidden" name="confirm_amount" value="<?= htmlspecialchars($amount) ?>">
+                <button type="submit" name="confirm_payment" class="btn btn-success mt-3">Confirm Payment</button>
+            </form>
+        <?php endif; ?>
+    </div>
+</div>
 
     <!-- Transaction History Section -->
     <?php if (!empty($history)): ?>
