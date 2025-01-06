@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
 // Fetch all orders with JOIN to include PaymentMethod from the payment table
 $orders = mysqli_query(
     $conn,
-    "SELECT o.Order_ID, o.CustomerID, o.Staff_ID, o.Status, o.Order_Date, o.Points_Earned, p.PaymentMethod 
+    "SELECT o.Order_ID, o.CustomerID, o.Staff_ID, o.Status, o.Order_Date, o.Points_Earned, p.Payment_Method 
      FROM `order` AS o
      LEFT JOIN `payment` AS p ON o.Order_ID = p.Order_ID"
 );
@@ -105,7 +105,7 @@ $orders = mysqli_query(
                                 <td><?php echo $order['Status']; ?></td>
                                 <td><?php echo $order['Order_Date']; ?></td>
                                 <td><?php echo $order['Points_Earned']; ?></td>
-                                <td><?php echo $order['PaymentMethod'] ?: 'Not Available'; ?></td>
+                                <td><?php echo $order['Payment_Method'] ?: 'Not Available'; ?></td>
                                 <td>
                                     <!-- Update Form -->
                                     <form method="POST" class="d-inline">

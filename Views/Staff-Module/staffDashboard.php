@@ -14,13 +14,13 @@ $totalPointsResult = mysqli_query($conn, $totalPointsQuery);
 $totalPoints = mysqli_fetch_assoc($totalPointsResult)['Points_Earned'];
 
 // Payment Method Breakdown
-$paymentBreakdownQuery = "SELECT PaymentMethod, COUNT(*) AS count FROM `payment` GROUP BY PaymentMethod";
+$paymentBreakdownQuery = "SELECT Payment_Method, COUNT(*) AS count FROM `payment` GROUP BY Payment_Method";
 $paymentBreakdownResult = mysqli_query($conn, $paymentBreakdownQuery);
 
 $paymentMethods = [];
 $paymentCounts = [];
 while ($row = mysqli_fetch_assoc($paymentBreakdownResult)) {
-    $paymentMethods[] = $row['PaymentMethod'];
+    $paymentMethods[] = $row['Payment_Method'];
     $paymentCounts[] = $row['count'];
 }
 
@@ -67,7 +67,7 @@ mysqli_close($conn);
             <div class="card text-white bg-primary mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Total Orders</h5>
-                    <p class="card-text display-4"><?php echo $totalOrders; ?></p>
+                   
                 </div>
             </div>
         </div>
