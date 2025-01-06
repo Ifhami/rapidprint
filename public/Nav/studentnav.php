@@ -29,7 +29,7 @@ if (isset($_SESSION['role'])) {
                     <a class="nav-link" href="../../Views/Homepage/student.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../../Views/Student-Module/student-dashboard.php">About</a>
+                    <a class="nav-link" href="../../Views/Student-Module/student-dashboard.php">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="../../Views/Student-Module/membership-card.php">Membership</a>
