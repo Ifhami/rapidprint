@@ -51,9 +51,6 @@ if (isset($_SESSION['role'])) {
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../../Views/Staff-Module/membership-balance.php">Student Membership</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
                 </li>
                 <li class="nav-item">
