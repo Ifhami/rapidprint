@@ -44,12 +44,12 @@ if (isset($_SESSION['role'])) {
                         
                             <li><a class="dropdown-item" href="../../Views/PrintingOrder/Staff_Bonus.php">Staff Bonus Management</a></li>
                             <li><a class="dropdown-item" href="../../Views/PrintingOrder/UpdateOrderStatus.php">Update Order Status</a></li>
-                            <li><a class="dropdown-item" href="../../Views/staffDashboard.php">Staff Dashboard</a></li>
+                            <li><a class="dropdown-item" href="../../Views/Staff-Module/staffDashboard.php">Staff Dashboard</a></li>
                         
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Example</a>
+                    <a class="nav-link" href="../../Views/Staff-Module/membership-balance.php">Student Membership</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -72,7 +72,7 @@ if (isset($_SESSION['role'])) {
                 <?php else: ?>
                     <!-- If user is not logged in, display Log In link -->
                     <li class="nav-item">
-                        <a class="nav-link" href="../../Views/Login/login.php">Log In</a>
+                        <a class="nav-link" href="../../Views/Login/login.php"></a>
                     </li>
                 <?php endif; ?>
             </ul>

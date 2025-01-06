@@ -10,24 +10,6 @@ if (!isset($_SESSION['UserID']) || $_SESSION['role'] !== 'student') {
 
 $UserID = $_SESSION['UserID'];
 
-// Handle Add Money
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_money'])) {
-    $amount = floatval($_POST['amount']); // Get the amount to add
-
-    if ($amount > 0) { // Validate the amount
-        $stmt_update = $conn->prepare("UPDATE membership_card SET balance = balance + ? WHERE CustomerID = ?");
-        $stmt_update->bind_param("di", $amount, $UserID);
-
-        if ($stmt_update->execute()) {
-            $success = "Money added successfully!";
-        } else {
-            $error = "Error adding money. Please try again.";
-        }
-        $stmt_update->close();
-    } else {
-        $error = "Please enter a valid amount.";
-    }
-}
 
 // Handle Cancel Membership
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_membership'])) {
@@ -108,20 +90,6 @@ $stmt_history->close();
         </div>
     </div>
 
-    <!-- Add Money Section -->
-    <?php if ($qr_code): ?>
-        <div class="card shadow-sm mt-4">
-            <div class="card-body">
-                <h2 class="card-title">Add Money</h2>
-                <form method="POST">
-                    <div class="input-group mb-3">
-                        <input type="number" step="0.01" name="amount" class="form-control" placeholder="Enter amount" required>
-                        <button type="submit" name="add_money" class="btn btn-primary">Add Money</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    <?php endif; ?>
 
     <!-- Transaction History Section -->
     <?php if (!empty($history)): ?>
