@@ -10,7 +10,24 @@ if (!isset($_SESSION['UserID']) || $_SESSION['role'] !== 'student') {
 
 $UserID = $_SESSION['UserID'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['membership-card'])) {
+// Initialize $error variable to avoid the warning
+$error = "";  // Make sure it's initialized before use
+
+// Check if the user is verified and has uploaded verification proof
+$stmt_verification = $conn->prepare("SELECT verification_status, verification_proof FROM user WHERE UserID = ?");
+$stmt_verification->bind_param("i", $UserID);
+$stmt_verification->execute();
+$stmt_verification->bind_result($verification_status, $verification_proof);
+$stmt_verification->fetch();
+$stmt_verification->close();
+
+// Error message if not verified or proof is not uploaded
+if ($verification_status !== 'approved' || empty($verification_proof)) {
+    $error = "You must be verified and have uploaded your verification proof to apply for a membership card.";
+}
+
+// Handle membership card creation if user is verified and proof is uploaded
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['membership-card']) && !$error) {
     $stmt = $conn->prepare("SELECT membership_ID FROM membership_card WHERE CustomerID = ?");
     $stmt->bind_param("i", $UserID);
     $stmt->execute();
@@ -44,15 +61,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['membership-card'])) {
 <?php include '../../public/nav/studentnav.php'; ?>
 
 <div class="container mt-5">
-    <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
+    <?php if (isset($error) && $error !== "") echo "<div class='alert alert-danger'>$error</div>"; ?>
     <?php if (isset($success)) echo "<div class='alert alert-success'>$success</div>"; ?>
 
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="card-title">Apply for Membership</h2>
-            <form method="POST">
-                <button type="submit" name="membership-card" class="btn btn-primary">Apply for Membership</button>
-            </form>
+            <?php if ($verification_status === 'approved' && !empty($verification_proof)): ?>
+                <form method="POST">
+                    <button type="submit" name="membership-card" class="btn btn-primary">Apply for Membership</button>
+                </form>
+            <?php else: ?>
+                <!-- The error message will already be displayed if needed, so no need to repeat it here -->
+            <?php endif; ?>
         </div>
     </div>
 </div>
