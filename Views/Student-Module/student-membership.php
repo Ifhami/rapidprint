@@ -36,9 +36,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_money'])) {
             // Handle cash payment: directly update balance
             $stmt_update = $conn->prepare("UPDATE membership_card SET balance = balance + ? WHERE CustomerID = ?");
             $stmt_update->bind_param("di", $amount, $UserID);
-            
+
             if ($stmt_update->execute()) {
                 $payment_success = "Balance updated successfully with cash payment!";
+
+                // Regenerate the QR code after balance update
+                $stmt_card = $conn->prepare("SELECT points, balance FROM membership_card WHERE CustomerID = ?");
+                $stmt_card->bind_param("i", $UserID);
+                $stmt_card->execute();
+                $stmt_card->bind_result($points, $balance);
+                $stmt_card->fetch();
+                $stmt_card->close();
+
+                $qr_data = "User ID: $UserID\nPoints: $points\nBalance: $balance";
+                $qr_code_url = "https://quickchart.io/qr?text=" . urlencode($qr_data) . "&size=200";
+
+                // Update the QR code in the database
+                $stmt_update_qr = $conn->prepare("UPDATE membership_card SET qr_code = ? WHERE CustomerID = ?");
+                $stmt_update_qr->bind_param("si", $qr_code_url, $UserID);
+                if ($stmt_update_qr->execute()) {
+                    $payment_success = "Balance updated and QR code regenerated successfully!";
+                } else {
+                    $payment_error = "Error updating QR code. Please try again.";
+                }
+                $stmt_update_qr->close();
             } else {
                 $payment_error = "Error updating balance. Please try again.";
             }
@@ -56,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_money'])) {
         }
     }
 }
+
 
 // Handle Online Banking Confirmation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
