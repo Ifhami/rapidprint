@@ -1,6 +1,6 @@
 <?php
 // Connect to the database
-include '../public/includes/db_connect.php';
+include '../../public/includes/db_connect.php';
 
 // Fetch data for the dashboard
 // Total Orders
@@ -57,7 +57,7 @@ mysqli_close($conn);
     </style>
 </head>
 <body>
-<?php include '../public/nav/staffnav.php'; ?> <!-- Include navbar -->
+<?php include '../../public/nav/staffnav.php'; ?> <!-- Include navbar -->
 <div class="container">
     <h1>Staff Dashboard</h1>
 

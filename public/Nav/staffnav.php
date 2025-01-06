@@ -40,7 +40,9 @@ if (isset($_SESSION['role'])) {
                         Services
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
-                        <li><a class="dropdown-item" href="../../Views/PrintingOrder/ListOfInvoice.php">List of Invoices</a></li>
+                        
+                        
+                           <li><a class="dropdown-item" href="../../Views/PrintingOrder/ListOfInvoice.php">List of Invoices</a></li>
                         
                             <li><a class="dropdown-item" href="../../Views/PrintingOrder/Staff_Bonus.php">Staff Bonus Management</a></li>
                             <li><a class="dropdown-item" href="../../Views/PrintingOrder/UpdateOrderStatus.php">Update Order Status</a></li>

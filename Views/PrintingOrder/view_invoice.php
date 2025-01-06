@@ -11,7 +11,12 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $invoiceId = intval($_GET['id']);
 
 // Query to retrieve the invoice details
-$invoiceQuery = "SELECT * FROM invoice WHERE Invoice_ID = $invoiceId";
+$invoiceQuery = "
+    SELECT i.*, o.Order_ID, p.package_name, p.package_detail 
+    FROM invoice i 
+    LEFT JOIN orderline o ON i.Order_ID = o.Order_ID 
+    LEFT JOIN package p ON o.Package_ID = p.packageID 
+    WHERE i.Invoice_ID = $invoiceId";
 $invoiceResult = mysqli_query($conn, $invoiceQuery);
 
 if (!$invoiceResult) {
@@ -25,13 +30,9 @@ if (!$invoice) {
     die("Invoice not found.");
 }
 
-
-
-
 // Close database connection
 mysqli_close($conn);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,13 +97,10 @@ mysqli_close($conn);
 
     <!-- Invoice Information -->
     <h2>Invoice #<?php echo htmlspecialchars($invoice['Invoice_ID']); ?></h2>
-    <p><strong>Total Cost:</strong> RM <?php echo number_format($invoice['Total_Cost'],2); ?></p>
-    <p><strong>Discount Applied:</strong> RM <?php echo number_format($invoice['Discount_Applied'],2); ?></p>
-    <p><strong>Points Redeemed:</strong>  <?php echo htmlspecialchars($invoice['Points_Redeemed']); ?></p>
-
-    <!-- Invoice Items -->
-    <h2>Items</h2>
-    
+    <p><strong>Order ID:</strong> <?php echo htmlspecialchars($invoice['Order_ID']); ?></p>
+    <p><strong>Total Cost:</strong> RM <?php echo number_format($invoice['Total_Cost'], 2); ?></p>
+    <p><strong>Package Name:</strong> <?php echo htmlspecialchars($invoice['package_name']); ?></p>
+    <p><strong>Package Detail:</strong> <?php echo !empty($invoice['package_detail']) ? htmlspecialchars($invoice['package_detail']) : 'N/A'; ?></p>
 
     <a href="ListOfInvoice.php" class="btn-back">Back to Invoices</a>
 </div>

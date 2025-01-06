@@ -1,6 +1,4 @@
 <?php
-// UPDATE ORDER STATUS
-// Connect to the database
 include '../../public/includes/db_connect.php';
 
 // Handle the form submission
@@ -13,6 +11,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
 
     if (mysqli_query($conn, $sql)) {
         $message = "Order status updated successfully.";
+        
+        // If the new status is "Order complete," create an invoice
+        if ($newStatus === 'Order complete') {
+            // Fetch order details
+            $orderQuery = "SELECT * FROM `orderline` WHERE Order_ID = $orderId";
+            $orderResult = mysqli_query($conn, $orderQuery);
+            if ($orderResult && mysqli_num_rows($orderResult) > 0) {
+                $order = mysqli_fetch_assoc($orderResult);
+                $totalCost = $order['Total_Cost'];
+                $pointsRedeemed = $order['Points_Earned'];
+                $invoiceDate = date('Y-m-d');
+
+                // Insert into invoice table
+                $invoiceQuery = "INSERT INTO invoice (Order_ID, Total_Cost, Points_Redeemed, Invoice_Date) VALUES (?, ?, ?, ?)";
+                $stmt = $conn->prepare($invoiceQuery);
+                $stmt->bind_param('idds', $orderId, $totalCost, $pointsRedeemed, $invoiceDate);
+
+                if ($stmt->execute()) {
+                    $message .= " Invoice created successfully.";
+                } else {
+                    $message .= " Error creating invoice: " . $stmt->error;
+                }
+            } else {
+                $message = "No order details found for invoice creation.";
+            }
+        }
     } else {
         $message = "Error updating order: " . mysqli_error($conn);
     }
@@ -117,6 +141,8 @@ $orders = mysqli_query(
                                         </select>
                                         <button type="submit" name="update_status" class="btn btn-update btn-sm">Update</button>
                                     </form>
+                                    <!-- Link to create invoice -->
+                                    <a href="CreateInvoice.php?Order_ID=<?php echo $order['Order_ID']; ?>" class="btn btn-primary btn-sm mt-2">Create Invoice</a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>

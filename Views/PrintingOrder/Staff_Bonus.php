@@ -1,4 +1,4 @@
-<<?php
+<?php
 // STAFF BONUS
 include '../../public/includes/db_connect.php';
 include '../../public/includes/staff.php'; // Include your staff-related data
@@ -12,7 +12,8 @@ if (!$conn) {
 $user_id = $_SESSION['UserID']; // Assuming the user ID is stored in session
 
 // Fetch staff members with recorded bonuses
-$bonusQuery = "SELECT u.*, sb.Bonus_Amount, sb.POINTS_ACCUMULATED FROM user u
+$bonusQuery = "SELECT u.*, sb.Bonus_Amount, sb.POINTS_ACCUMULATED, sb.BONUS_EARNED 
+               FROM user u
                JOIN staff_bonus sb ON u.UserID = sb.Staff_ID
                WHERE sb.Staff_ID = $user_id AND sb.Date_Recorded = CURDATE()"; // Filter by today's date and user ID
 
@@ -25,9 +26,9 @@ if (!$bonusResult) {
 $bonusData = [];
 while ($bonus = mysqli_fetch_assoc($bonusResult)) {
     $bonusData[] = [
-        'name' => $bonus['full_name'],
+        'name' => $bonus['full_name'], // Ensure the column 'full_name' is correct in your user table
         'total_points' => $bonus['POINTS_ACCUMULATED'],
-        'bonus_earned' => $bonus['Bonus_Amount'],
+        'bonus_earned' => $bonus['BONUS_EARNED'],
     ];
 }
 

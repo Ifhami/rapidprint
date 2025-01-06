@@ -9,7 +9,7 @@ if (!$conn) {
 // Function to fetch invoices from the database
 function getInvoices() {
     global $conn;
-    $query = "SELECT Invoice_ID, Order_ID, Total_Cost, Discount_Applied, Points_Redeemed, Invoice_Date, QR_Code FROM invoice";
+    $query = "SELECT Invoice_ID, Order_ID, Total_Cost, Discount_Applied, Invoice_Date, QR_Code FROM invoice";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
@@ -78,7 +78,6 @@ $invoices = getInvoices();
                         <th scope="col">Order ID</th>
                         <th scope="col">Total Cost (RM)</th>
                         <th scope="col">Discount Applied (RM)</th>
-                        <th scope="col">Points Redeemed</th>
                         <th scope="col">Invoice Date</th>
                         <th scope="col">QR Code</th>
                         <th scope="col">Actions</th>
@@ -91,7 +90,6 @@ $invoices = getInvoices();
                             <td><?php echo htmlspecialchars($invoice['Order_ID']); ?></td>
                             <td><?php echo number_format($invoice['Total_Cost'], 2); ?></td>
                             <td><?php echo number_format($invoice['Discount_Applied'], 2); ?></td>
-                            <td><?php echo htmlspecialchars($invoice['Points_Redeemed']); ?></td>
                             <td><?php echo date('F j, Y', strtotime($invoice['Invoice_Date'])); ?></td>
                             <td class="qr-code">
                                 <img src="data:image/png;base64,<?php echo base64_encode($invoice['QR_Code']); ?>" alt="QR Code">
