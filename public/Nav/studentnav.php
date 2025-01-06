@@ -31,13 +31,15 @@ if (isset($_SESSION['role'])) {
                 <li class="nav-item">
                     <a class="nav-link" href="../../Views/Student-Module/dashboard.php">Dashboard</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../../Views/Student-Module/student-membership.php">Membership Details</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="accountRegistrationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Membership
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountRegistrationDropdown">
+                        <li><a class="dropdown-item" href="../../Views/Student-Module/membership-card.php">Membership Application</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Student-Module/student-membership.php">Membership Details</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../../Views/Student-Module/membership-card.php">Membership Application</a>
-                </li>
-
                 <!-- User Dropdown -->
                 <?php if (isset($_SESSION['UserID'])): ?>
                     <li class="nav-item dropdown">
