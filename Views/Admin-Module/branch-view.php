@@ -1,19 +1,24 @@
 <?php
-// Include necessary files for database connection
 include '../../public/includes/db_connect.php';
 
-if (isset($_GET['branchID'])) {
-    $branchID = $_GET['branchID'];
-    $query = "SELECT branch, branchLocation, branchContact, branchEmail FROM branch WHERE branchID = '$branchID'";
-    $result = mysqli_query($conn, $query);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['branchID'])) {
+        $branchID = $_POST['branchID'];
+        $query = "SELECT * FROM branch WHERE branchID = '$branchID'";
+        $result = mysqli_query($conn, $query);
 
-    if ($result && mysqli_num_rows($result) > 0) {
-        $branch = mysqli_fetch_assoc($result);
-        echo json_encode(['success' => true, 'branch' => $branch]);
+        if ($result && mysqli_num_rows($result) > 0) {
+            $branch = mysqli_fetch_assoc($result);
+
+            // Output the branch details as HTML
+            echo '<div id="viewBranchName">' . htmlspecialchars($branch['branch']) . '</div>';
+            echo '<div id="viewBranchLocation">' . htmlspecialchars($branch['branchLocation']) . '</div>';
+            echo '<div id="viewBranchContact">' . htmlspecialchars($branch['branchContact']) . '</div>';
+            echo '<div id="viewBranchEmail">' . htmlspecialchars($branch['branchEmail']) . '</div>';
+        } else {
+            echo 'Branch not found.';
+        }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Branch not found']);
+        echo 'No branch ID provided.';
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'No branch ID provided']);
 }
-?>
