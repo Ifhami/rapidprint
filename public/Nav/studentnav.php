@@ -32,6 +32,16 @@ if (isset($_SESSION['role'])) {
                     <a class="nav-link" href="../../Views/Student-Module/dashboard.php">Dashboard</a>
                 </li>
                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="orderDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Order
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="orderDropdown">
+                        <li><a class="dropdown-item" href="../../Views/Student-Module/viewpackages.php">View Packages</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Student-Module/historyorders.php">History Orders</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="accountRegistrationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Membership
                     </a>
