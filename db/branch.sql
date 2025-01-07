@@ -43,7 +43,8 @@ CREATE TABLE `branch` (
 INSERT INTO `branch` (`branchID`, `UserID`, `branch`, `branchLocation`, `branchContact`, `branchEmail`) VALUES
 (6, 10, 'Gambang', 'UMPSA Gambang, Pahang', '0312345612', 'gambang@branch.com'),
 (7, 10, 'Pekan', 'UMPSA Pekan, Pahang', '0300165243', 'pekan@branch.com'),
-(9, 10, 'Kuantan', 'UMPSA Kuantan, Pahang', '0362537383', 'kuantan@branch.com');
+(9, 10, 'Kuantan', 'UMPSA Kuantan, Pahang', '0362537383', 'kuantan@branch.com')
+(15, 12, 'PekanGambang', 'UMPSA PekanGambang, Pahang', '0362537381', 'pekangambang@branch.com');
 
 --
 -- Indexes for dumped tables
