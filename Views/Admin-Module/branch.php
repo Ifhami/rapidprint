@@ -1,4 +1,5 @@
 <?php
+/* Model 1 - Branch */
 // Include the database connection file and start session
 include '../../public/includes/db_connect.php';
 include '../../public/includes/admin.php';

@@ -1,4 +1,5 @@
 <?php
+/* Model 1 - Package */
 // Include the database connection file
 include '../../public/includes/db_connect.php';
 

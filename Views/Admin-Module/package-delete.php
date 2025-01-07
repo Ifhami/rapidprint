@@ -1,4 +1,5 @@
 <?php
+/* Model 1 - Package */
 include '../../public/includes/db_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
