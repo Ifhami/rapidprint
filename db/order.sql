@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2024 at 02:37 AM
+-- Generation Time: Jan 07, 2025 at 03:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,8 +34,17 @@ CREATE TABLE `order` (
   `Status` varchar(50) DEFAULT NULL,
   `Order_Date` date NOT NULL,
   `Points_Earned` int(11) DEFAULT NULL,
-  `Payment_Method` varchar(50) DEFAULT NULL
+  `Ord_Tax` decimal(10,2) NOT NULL,
+  `Ord_Total` decimal(10,2) NOT NULL,
+  `Remarks` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`Order_ID`, `CustomerID`, `Staff_ID`, `Status`, `Order_Date`, `Points_Earned`, `Ord_Tax`, `Ord_Total`, `Remarks`) VALUES
+(13, 12, 0, 'Order complete', '2025-01-06', 15, 0.05, 1.55, 'test');
 
 --
 -- Indexes for dumped tables
@@ -50,15 +59,14 @@ ALTER TABLE `order`
   ADD KEY `Staff_ID` (`Staff_ID`);
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- Constraints for table `order`
+-- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`),
-  ADD CONSTRAINT `order_ibfk_2` FOREIGN KEY (`Staff_ID`) REFERENCES `staff` (`Staff_ID`);
+  MODIFY `Order_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

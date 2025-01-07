@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2024 at 02:37 AM
+-- Generation Time: Jan 07, 2025 at 03:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,6 +36,14 @@ CREATE TABLE `invoice` (
   `Invoice_Date` date NOT NULL,
   `QR_Code` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `invoice`
+--
+
+INSERT INTO `invoice` (`Invoice_ID`, `Order_ID`, `Total_Cost`, `Discount_Applied`, `Points_Redeemed`, `Invoice_Date`, `QR_Code`) VALUES
+(0, 13, 1.50, NULL, NULL, '2025-01-06', NULL),
+(232344, 13, 1.50, NULL, NULL, '2025-01-06', NULL);
 
 --
 -- Indexes for dumped tables
