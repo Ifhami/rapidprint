@@ -40,10 +40,16 @@ if (isset($_GET['Package_ID'])) {
     <title>Select Package</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
+        }
+
+        .hero-section {
+            background-color: #f8f9fa;
+            padding: 50px 0;
         }
 
         .container {
@@ -114,11 +120,27 @@ if (isset($_GET['Package_ID'])) {
         .order-btn {
             background-color: #27ae60;
         }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 40px;
+        }
     </style>
 </head>
 
 <body>
-    <?php include '../../public/includes/navLogic.php'; ?>
+    <?php include '../../public/nav/studentnav.php'; ?> <!-- Include navbar -->
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-5">Package Details</h1>
+            <p class="lead">Find out more about the selected package.</p>
+        </div>
+    </section>
 
     <div class="container">
         <div class="card">
@@ -148,6 +170,11 @@ if (isset($_GET['Package_ID'])) {
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 MyWebsite. All rights reserved.</p>
+    </footer>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
