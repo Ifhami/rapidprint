@@ -8,11 +8,11 @@ if (!isset($_SESSION['UserID'])) {
     exit;
 }
 
-// Get the selected Package_ID from the URL
-$packageID = isset($_GET['Package_ID']) ? $_GET['Package_ID'] : 0;
+// Get the selected packageID from the URL
+$packageID = isset($_GET['packageID']) ? $_GET['packageID'] : 0;
 
-// Fetch package details based on Package_ID
-$sql_package = "SELECT * FROM Package WHERE Package_ID = $packageID";
+// Fetch package details based on packageID
+$sql_package = "SELECT * FROM Package WHERE packageID = $packageID";
 $result_package = $conn->query($sql_package);
 
 if ($result_package->num_rows > 0) {
@@ -86,13 +86,13 @@ if ($result_package->num_rows > 0) {
             <!-- Display Package Name and Price -->
             <div class="mb-4">
                 <h5>Package Selected:</h5>
-                <p><?php echo $package['Package_Name']; ?></p>
+                <p><?php echo $package['package_name']; ?></p>
                 <h5>Price:</h5>
-                <p>RM <?php echo number_format($package['Price'], 2); ?></p>
+                <p>RM <?php echo number_format($package['price'], 2); ?></p>
             </div>
 
             <!-- Form to Create Order -->
-            <form method="POST" action="submitorder.php?Package_ID=<?php echo $packageID; ?>" enctype="multipart/form-data">
+            <form method="POST" action="submitorder.php?packageID=<?php echo $packageID; ?>" enctype="multipart/form-data">
                 <!-- File Upload -->
                 <div class="mb-3">
                     <label for="file" class="form-label">Upload File</label>
