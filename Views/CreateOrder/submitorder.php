@@ -56,14 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if (move_uploaded_file($file_tmp_name, $file_path)) {
-<<<<<<< HEAD
             // Calculate the total cost based on quantity and package price
             $total_cost = $package['price'] * $quantity;
 
             // Calculate Ord_Tax as 3% of Total_Cost
-=======
-            $total_cost = $package['price'] * $quantity;
->>>>>>> 6fe93121443a8330c10098bc6736b147a370c009
             $ord_tax = $total_cost * 0.03;
             $points_earned = $total_cost * 10;
             $ord_total = $total_cost + $ord_tax;
