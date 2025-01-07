@@ -98,6 +98,7 @@ while ($row = $result_orderline->fetch_assoc()) {
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>File</th>
                         <th>Colour</th>
                         <th>Print Quality</th>
                         <th>Additional Service</th>
@@ -109,6 +110,12 @@ while ($row = $result_orderline->fetch_assoc()) {
                 <tbody>
                     <?php foreach ($orderlines as $orderline): ?>
                         <tr>
+                            <td>
+                                <?php
+                                // Check if the file path is available and display the file name
+                                echo basename($orderline['File']);
+                                ?>
+                            </td>
                             <td><?php echo $orderline['Colour']; ?></td>
                             <td><?php echo $orderline['Print_Quality']; ?></td>
                             <td><?php echo $orderline['Add_Service']; ?></td>
