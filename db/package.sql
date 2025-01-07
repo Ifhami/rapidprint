@@ -45,8 +45,8 @@ INSERT INTO `package` (`packageID`, `branchID`, `package_name`, `package_detail`
 (4, 6, 'Basic Package', 'Black & White, One Sided', 0.50, 'Available', 'qrcodes/basic.png'),
 (5, 6, 'Premium Package', 'Color, Two Sided', 1.50, 'Available', 'qrcodes/premium.png'),
 (6, 6, 'Standard Package', 'Color, One Sided', 1.00, 'Available', 'qrcodes/standard.png'),
-(7, 6, 'Normal Package', 'Black & White, One Sided', 0.20, 'Available', 'qrcodes/normal.png');
-
+(7, 6, 'Normal Package', 'Black & White, One Sided', 0.20, 'Available', 'qrcodes/normal.png')
+(16, 15, 'Gold', 'All,  All', 2.00, 'Available', 'qrcodes/gold.png');
 --
 -- Indexes for dumped tables
 --
