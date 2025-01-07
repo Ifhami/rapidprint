@@ -89,7 +89,7 @@ $invoices = getInvoices();
                             <td><?php echo htmlspecialchars($invoice['Invoice_ID']); ?></td>
                             <td><?php echo htmlspecialchars($invoice['Order_ID']); ?></td>
                             <td><?php echo number_format($invoice['Total_Cost'], 2); ?></td>
-                            
+                            <td><?php echo number_format($invoice['Discount_Applied'], 2); ?></td>
                             <td><?php echo date('F j, Y', strtotime($invoice['Invoice_Date'])); ?></td>
                             <td class="qr-code">
                                 <img src="data:image/png;base64,<?php echo base64_encode($invoice['QR_Code']); ?>" alt="QR Code">
