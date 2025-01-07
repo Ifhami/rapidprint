@@ -151,9 +151,17 @@ $orderlines = $result_orderline->fetch_all(MYSQLI_ASSOC);
             <div class="details">
                 <h3>Payment Method</h3>
                 <div class="form-group">
-                    <label><input type="radio" name="payment_method" value="Cash" required> Cash</label><br>
-                    <label><input type="radio" name="payment_method" value="Membership Balance" required> Membership Balance</label><br>
-                    <label><input type="radio" name="payment_method" value="Membership Points" required> Membership Points</label>
+                    <label>
+                        <input type="radio" name="payment_method" value="Cash" required> Cash
+                    </label><br>
+                    <label>
+                        <input type="radio" name="payment_method" value="Membership Balance" required> Membership Balance
+                    </label><br>
+                    <label>
+                        <input type="radio" name="payment_method" value="Membership Points" required> 
+                        Membership Points 
+                        <span>(Required: <?php echo $order['Ord_Total']; ?> points)</span>
+                    </label>
                 </div>
             </div>
 
@@ -163,7 +171,6 @@ $orderlines = $result_orderline->fetch_all(MYSQLI_ASSOC);
                 <button type="submit" class="btn btn-proceed">Proceed to Payment</button>
             </div>
         </form>
-    </div>
 
     <!-- Footer -->
     <footer>
