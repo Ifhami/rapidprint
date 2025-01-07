@@ -1,4 +1,9 @@
 <?php
+/* Model 1 - Package */
+// Include the database connection file and start session
+include '../../public/includes/db_connect.php';
+include '../../public/includes/admin.php';
+
 // Check if the user has a role and set the homepage link accordingly
 if (isset($_SESSION['role'])) {
     switch ($_SESSION['role']) {

@@ -1,4 +1,5 @@
 <?php
+/* Model 1 - Package */
 // Include the database connection file and start session
 include '../../public/includes/db_connect.php';
 include '../../public/includes/admin.php';
@@ -161,6 +162,7 @@ include '../../public/includes/admin.php';
 
             <tbody>
                 <?php
+                //Fethes package data from database display and an action button
                 if (isset($conn)) {
                     $query = "SELECT * FROM package";
                     $result = mysqli_query($conn, $query);
@@ -236,6 +238,7 @@ include '../../public/includes/admin.php';
             <span class="close" onclick="closeModal()">&times;</span>
         </div>
         <div class="modal-body">
+            
             <!-- Hidden input for packageID -->
             <input type="hidden" id="packageID" name="packageID" value="">
 
@@ -342,16 +345,16 @@ include '../../public/includes/admin.php';
         </div>
     </form>
 </div>
-
     <!-- Modal for Create -->
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-     <!-- JavaScript functions for managing Package -->
+    <!-- JavaScript functions for managing Package -->
     <script>
-        // View package
+        //Display the modal
+        // View package send packageID to package-view.php
         function viewPackage(packageID) {
     const formData = new FormData();
     formData.append('packageID', packageID);

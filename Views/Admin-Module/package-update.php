@@ -1,4 +1,5 @@
 <?php
+/* Model 1 - Package */
 // Include the database connection file
 include '../../public/includes/db_connect.php';
 
@@ -34,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['packageID'])) {
         exit;
     }
 
-    // Get values from POST request
+    // Get values or extract from POST request
     $packageID = $_POST['packageID'];
-    $branchID = $_POST['branch']; // Assuming branch is being passed via form
+    $branchID = $_POST['branch']; 
     $package_name = $_POST['package_name'];
     $package_detail = $_POST['package_detail'];
     $price = $_POST['price'];
@@ -46,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['packageID'])) {
     // Update package details
     $query = "UPDATE package SET package_name = '$package_name', package_detail = '$package_detail', price = '$price', status = '$status', qr_code = '$qr_code' WHERE packageID = '$packageID'"; 
     $result = mysqli_query($conn, $query);
-
+    // Handle update result
     if ($result) {
         echo "<script type='text/javascript'>alert('Package updated successfully!'); window.location='package.php';</script>";
         exit;
