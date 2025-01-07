@@ -1,7 +1,7 @@
 <?php
 /* Model 1 - Package */
 include '../../public/includes/db_connect.php';
-
+//Post request handling
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['packageID'])) {
         $packageID = $_POST['packageID']; // Correct variable name here
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 echo 'Failed to delete package.';
             }
-            $stmt->close();
+            $stmt->close(); //closes the prepared statement to free resource
         } else {
             echo 'Failed to prepare statement.';
         }

@@ -2,7 +2,7 @@
 /* Model 1 - Branch */
 // Include the database connection file
 include '../../public/includes/db_connect.php';
-
+//handling get request for fetching
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['branchID'])) {
     $branchID = $_GET['branchID'];
 
@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['branchID'])) {
         echo "Branch not found.";
         exit;
     }
+//handling post request
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     extract($_POST);
 

@@ -296,7 +296,8 @@ include '../../public/includes/admin.php';
 
     <!-- JavaScript functions for managing branches -->
     <script>
-        // View Branch
+
+        // View Branch to display the model
         function viewBranch(branchID) {
             const formData = new FormData();
             formData.append('branchID', branchID);
@@ -333,10 +334,7 @@ function closeModal() {
     document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
 }
 
-
-
-
-    // Edit Branch
+    // Edit Branch fetches detail via branch-vie.php and prefill the update
     function editBranch() {
     const selected = getSelectedBranch();
     if (selected.length === 1) {

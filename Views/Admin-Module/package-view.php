@@ -2,11 +2,11 @@
 /* Model 1 - Package */
 include '../../public/includes/db_connect.php';
 
-// package-view.php
+// checking packageID in request
 if (isset($_POST['packageID'])) {
     $packageID = $_POST['packageID'];
     
-    // Fetch package data
+    // Fetch and return package data 
     $query = "SELECT * FROM package WHERE packageID = ?";
     if ($stmt = mysqli_prepare($conn, $query)) {
         mysqli_stmt_bind_param($stmt, "i", $packageID);
