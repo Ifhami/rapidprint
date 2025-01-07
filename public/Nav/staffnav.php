@@ -37,7 +37,7 @@ if (isset($_SESSION['role'])) {
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Services
+                        Management
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
                         
