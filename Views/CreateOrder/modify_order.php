@@ -2,163 +2,223 @@
 session_start();
 include '../../public/includes/db_connect.php';
 
-// Check if the user is logged in
+// Ensure the user is logged in
 if (!isset($_SESSION['UserID'])) {
-    header("Location: login.php");
+    header("Location: ../../Views/Login/login.php");
+    exit();
+}
+
+// Get the order ID from the URL
+$orderID = isset($_GET['orderID']) ? $_GET['orderID'] : '';
+
+// Fetch order details based on Order ID
+$sql_order = "SELECT * FROM `order` WHERE Order_ID = '$orderID'";
+$result_order = $conn->query($sql_order);
+
+if ($result_order->num_rows > 0) {
+    $order = $result_order->fetch_assoc();
+} else {
+    echo "No order details found for this order.";
     exit;
 }
 
-// Check if the orderID is provided in the URL
-if (!isset($_GET['orderID'])) {
-    echo "Order ID is missing!";
-    exit;
+// Fetch orderline details
+$sql_orderline = "SELECT * FROM `orderline` WHERE Order_ID = '$orderID'";
+$result_orderline = $conn->query($sql_orderline);
+
+$orderlines = [];
+while ($row = $result_orderline->fetch_assoc()) {
+    $orderlines[] = $row;
 }
 
-$orderID = $_GET['orderID'];
-$userID = $_SESSION['UserID'];
-
-// Fetch the order details from the database
-$sql = "SELECT * FROM `Order` WHERE Order_ID = '$orderID' AND CustomerID = '$userID'";
-$result = $conn->query($sql);
-
-if ($result->num_rows == 0) {
-    echo "Order not found!";
-    exit;
-}
-
-$order = $result->fetch_assoc();
-
-// Check if the form is submitted
+// Handle form submission to modify the order and orderline
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $packages = $_POST['packages'];
-    $colour = $_POST['colour'];
-    $total_pages = $_POST['total_pages'];
-    $print_quality = $_POST['print_quality'];
-    $additional_service = $_POST['additional_service'];
-    $quantity = $_POST['quantity'];
     $remarks = $_POST['remarks'];
-
-    // Handle file upload
-    if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
-        $uploadDir = 'uploads/';
-        $fileName = basename($_FILES['file']['name']);
-        $targetFile = $uploadDir . $fileName;
-
-        // Move uploaded file to the server
-        if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
-            $file = $targetFile;
-        } else {
-            $file = $order['File']; // Keep the existing file if upload fails
-        }
-    } else {
-        $file = $order['File']; // Keep the existing file if no new file is uploaded
-    }
-
-    // Update the order in the database
-    $updateSql = "UPDATE `Order` SET
-                    Packages = '$packages',
-                    Colour = '$colour',
-                    Total_Pages = '$total_pages',
-                    Print_Quality = '$print_quality',
-                    Additional_Service = '$additional_service',
-                    Quantity = '$quantity',
-                    Remarks = '$remarks',
-                    File = '$file'
-                  WHERE Order_ID = '$orderID'";
-
-    if ($conn->query($updateSql) === TRUE) {
-        echo "Order updated successfully!";
-    } else {
+    
+    // Update the order table
+    $sql_update_order = "UPDATE `order` SET Remarks = '$remarks' WHERE Order_ID = '$orderID'";
+    if ($conn->query($sql_update_order) !== TRUE) {
         echo "Error updating order: " . $conn->error;
     }
-}
 
+    // Update each orderline
+    foreach ($_POST['orderline_id'] as $key => $orderline_id) {
+        // Get other fields
+        $colour = $_POST['colour'][$key];
+        $printQuality = $_POST['print_quality'][$key];
+        $additionalService = $_POST['additional_service'][$key];
+        $quantity = $_POST['quantity'][$key];
+        $page = $_POST['page'][$key];
+
+        // Update the orderline in the database
+        $sql_update_orderline = "UPDATE `orderline` SET 
+            Colour = '$colour', 
+            Print_Quality = '$printQuality', 
+            Add_Service = '$additionalService', 
+            Quantity = '$quantity', 
+            Page = '$page' 
+            WHERE OrderLine_ID = '$orderline_id'";
+
+        if ($conn->query($sql_update_orderline) !== TRUE) {
+            echo "Error updating orderline: " . $conn->error;
+        }
+    }
+
+    echo "<script>alert('Order updated successfully.'); window.location.href = 'historyorders.php';</script>";
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modify Order</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
+        .hero-section {
+            background-color: #f8f9fa;
+            padding: 50px 0;
         }
-        .container {
-            max-width: 900px;
-            margin: 50px auto;
+
+        .details {
+            background-color: #ffffff;
             padding: 20px;
-            background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
-        h2 {
-            text-align: center;
-            color: #333;
+
+        .btn-modify {
+            background-color: #f39c12; /* Yellow */
         }
-        form {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
+
+        .btn-modify:hover {
+            background-color: #e67e22;
         }
-        label {
-            font-weight: bold;
-            color: #333;
+
+        .btn-cancel {
+            background-color: #e74c3c; /* Red */
         }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+
+        .btn-cancel:hover {
+            background-color: #c0392b;
         }
-        button {
-            background-color: #3498db;
+
+        footer {
+            background-color: #333;
             color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 16px;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 40px;
         }
-        button:hover {
-            background-color: #2980b9;
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2>Modify Order #<?php echo $order['Order_ID']; ?></h2>
-        <form method="POST" enctype="multipart/form-data">
-            <label for="packages">Packages</label>
-            <input type="text" id="packages" name="packages" value="<?php echo $order['Packages']; ?>" required>
+    <?php include '../../public/nav/studentnav.php'; ?> <!-- Include navbar -->
 
-            <label for="colour">Colour</label>
-            <input type="text" id="colour" name="colour" value="<?php echo $order['Colour']; ?>" required>
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-5">Modify Order</h1>
+            <p class="lead">Modify the order details below.</p>
+        </div>
+    </section>
 
-            <label for="total_pages">Total Number of Pages</label>
-            <input type="number" id="total_pages" name="total_pages" value="<?php echo $order['Total_Pages']; ?>" required>
+    <!-- Modify Order Form Section -->
+    <div class="container mt-4">
+        <div class="details">
+            <h3>Order ID: <?php echo $order['Order_ID']; ?></h3> <!-- Display Order ID -->
+            <form action="modify_order.php?orderID=<?php echo $order['Order_ID']; ?>" method="POST">
+                <!-- Loop through the orderlines -->
+                <?php foreach ($orderlines as $index => $orderline): ?>
+                    <!-- Remove the "Orderline 1" text -->
+                    <!-- Colour Selection -->
+                    <div class="mb-3">
+                        <label for="colour" class="form-label">Colour</label>
+                        <select class="form-select" name="colour[]" required>
+                            <option value="Colour" <?php echo $orderline['Colour'] == 'Colour' ? 'selected' : ''; ?>>Colour</option>
+                            <option value="Black and White" <?php echo $orderline['Colour'] == 'Black and White' ? 'selected' : ''; ?>>Black and White</option>
+                            <option value="Both" <?php echo $orderline['Colour'] == 'Both' ? 'selected' : ''; ?>>Both</option>
+                        </select>
+                    </div>
 
-            <label for="print_quality">Print Quality</label>
-            <input type="text" id="print_quality" name="print_quality" value="<?php echo $order['Print_Quality']; ?>" required>
+                    <!-- Print Quality -->
+                    <div class="mb-3">
+                        <label for="print_quality" class="form-label">Print Quality</label>
+                        <select class="form-select" name="print_quality[]" required>
+                            <option value="Low" <?php echo $orderline['Print_Quality'] == 'Low' ? 'selected' : ''; ?>>Low</option>
+                            <option value="Medium" <?php echo $orderline['Print_Quality'] == 'Medium' ? 'selected' : ''; ?>>Medium</option>
+                            <option value="High" <?php echo $orderline['Print_Quality'] == 'High' ? 'selected' : ''; ?>>High</option>
+                        </select>
+                    </div>
 
-            <label for="additional_service">Additional Service</label>
-            <input type="text" id="additional_service" name="additional_service" value="<?php echo $order['Additional_Service']; ?>" required>
+                    <!-- Additional Service -->
+                    <div class="mb-3">
+                        <label class="form-label">Additional Service</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="additional_service[<?php echo $index; ?>]" value="Stapler" <?php echo $orderline['Add_Service'] == 'Stapler' ? 'checked' : ''; ?>>
+                            <label class="form-check-label">Stapler</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="additional_service[<?php echo $index; ?>]" value="Binding" <?php echo $orderline['Add_Service'] == 'Binding' ? 'checked' : ''; ?>>
+                            <label class="form-check-label">Binding</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="additional_service[<?php echo $index; ?>]" value="Laminate" <?php echo $orderline['Add_Service'] == 'Laminate' ? 'checked' : ''; ?>>
+                            <label class="form-check-label">Laminate</label>
+                        </div>
+                    </div>
 
-            <label for="quantity">Quantity</label>
-            <input type="number" id="quantity" name="quantity" value="<?php echo $order['Quantity']; ?>" required>
+                    <!-- Quantity -->
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" name="quantity[]" value="<?php echo $orderline['Quantity']; ?>" required>
+                    </div>
 
-            <label for="remarks">Remarks (Special Instruction)</label>
-            <textarea id="remarks" name="remarks"><?php echo $order['Remarks']; ?></textarea>
+                    <!-- Page Number -->
+                    <div class="mb-3">
+                        <label for="page" class="form-label">Total Number of Pages</label>
+                        <input type="number" class="form-control" name="page[]" value="<?php echo $orderline['Page']; ?>" required>
+                    </div>
 
-            <label for="file">Upload File</label>
-            <input type="file" id="file" name="file">
+                    <!-- Store OrderLine ID for updating -->
+                    <input type="hidden" name="orderline_id[]" value="<?php echo $orderline['OrderLine_ID']; ?>">
+                <?php endforeach; ?>
 
-            <button type="submit">Update Order</button>
-        </form>
+                <!-- Remarks -->
+                <div class="mb-3">
+                    <label for="remarks" class="form-label">Remarks (Special Instruction)</label>
+                    <textarea class="form-control" name="remarks" rows="4" required><?php echo htmlspecialchars($order['Remarks']); ?></textarea>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-modify">Update Order</button>
+                    <a href="historyorders.php" class="btn btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 MyWebsite. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
