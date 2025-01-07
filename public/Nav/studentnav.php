@@ -36,8 +36,8 @@ if (isset($_SESSION['role'])) {
                         Order
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="orderDropdown">
-                        <li><a class="dropdown-item" href="../../Views/Student-Module/viewpackages.php">View Packages</a></li>
-                        <li><a class="dropdown-item" href="../../Views/Student-Module/historyorders.php">History Orders</a></li>
+                        <li><a class="dropdown-item" href="../../Views/CreateOrder/viewpackages.php">View Packages</a></li>
+                        <li><a class="dropdown-item" href="../../Views/CreateOrder/historyorders.php">History Orders</a></li>
                     </ul>
                 </li>
 
