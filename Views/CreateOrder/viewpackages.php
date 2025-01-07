@@ -44,58 +44,69 @@ $conn->close();
     <title>View Packages</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
+        .hero-section {
             background-color: #f8f9fa;
+            padding: 50px 0;
         }
 
-        .container {
-            margin-top: 50px;
+        .filters {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
 
         .card {
             border: none;
-            border-radius: 15px;
-            transition: transform 0.3s;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
 
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);
         }
 
         .btn-select {
-            background-color: #007bff;
+            background-color: #3498db;
             color: #fff;
-            border-radius: 50px;
+            border-radius: 30px;
             padding: 10px 20px;
+            border: none;
             transition: background-color 0.3s;
         }
 
         .btn-select:hover {
-            background-color: #0056b3;
+            background-color: #2980b9;
         }
 
-        .filters {
-            margin-bottom: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .btn {
-                width: 100%;
-            }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 40px;
         }
     </style>
 </head>
 
 <body>
-    <?php include '../../public/includes/navLogic.php'; ?>
+    <?php include '../../public/nav/studentnav.php'; ?> <!-- Include navbar -->
 
-    <div class="container">
-        <h2 class="text-center mb-4">Explore Our Packages</h2>
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-5">Explore Our Packages</h1>
+            <p class="lead">Browse through our available packages and choose the one that suits you best.</p>
+        </div>
+    </section>
 
-        <!-- Filter Form -->
+    <!-- Filter and Search Section -->
+    <div class="container mt-4">
         <div class="filters">
             <form method="POST" action="viewpackages.php" class="row g-3">
                 <div class="col-md-6">
@@ -114,7 +125,7 @@ $conn->close();
             </form>
         </div>
 
-        <!-- Package Cards -->
+        <!-- Package Cards Section -->
         <div class="row">
             <?php
             if ($result->num_rows > 0) {
@@ -136,6 +147,11 @@ $conn->close();
             ?>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 MyWebsite. All rights reserved.</p>
+    </footer>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
