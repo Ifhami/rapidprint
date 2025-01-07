@@ -13,15 +13,15 @@ $user_role = $_SESSION['role'] ?? null;
 
 // Handle search and filter options
 $search = $_POST['search'] ?? '';
-$availability = $_POST['availability'] ?? 'All';
+$status = $_POST['status'] ?? 'All';
 
 // Build SQL query based on filter inputs
-if ($availability === 'All' || $availability === '') {
-    $sql = "SELECT * FROM Package WHERE Package_Name LIKE ?";
+if ($status === 'All' || $status === '') {
+    $sql = "SELECT * FROM package WHERE package_name LIKE ?";
     $param = "%$search%";
 } else {
-    $sql = "SELECT * FROM Package WHERE Package_Name LIKE ? AND Availability_Status = ?";
-    $param = ["%$search%", $availability];
+    $sql = "SELECT * FROM package WHERE package_name LIKE ? AND status = ?";
+    $param = ["%$search%", $status];
 }
 $stmt = $conn->prepare($sql);
 if (is_array($param)) {
@@ -113,10 +113,10 @@ $conn->close();
                     <input type="text" name="search" class="form-control" placeholder="Search packages..." value="<?php echo htmlspecialchars($search); ?>">
                 </div>
                 <div class="col-md-4">
-                    <select name="availability" class="form-select">
-                        <option value="All" <?php echo $availability == 'All' ? 'selected' : ''; ?>>All</option>
-                        <option value="Available" <?php echo $availability == 'Available' ? 'selected' : ''; ?>>Available</option>
-                        <option value="Not Available" <?php echo $availability == 'Not Available' ? 'selected' : ''; ?>>Not Available</option>
+                    <select name="status" class="form-select">
+                        <option value="All" <?php echo $status == 'All' ? 'selected' : ''; ?>>All</option>
+                        <option value="Available" <?php echo $status == 'Available' ? 'selected' : ''; ?>>Available</option>
+                        <option value="Unavailable" <?php echo $status == 'Unavailable' ? 'selected' : ''; ?>>Unavailable</option>
                     </select>
                 </div>
                 <div class="col-md-2">
@@ -133,10 +133,10 @@ $conn->close();
                     echo "<div class='col-md-4 mb-4'>
                             <div class='card'>
                                 <div class='card-body text-center'>
-                                    <h5 class='card-title'>" . htmlspecialchars($row['Package_Name']) . "</h5>
-                                    <p class='card-text text-primary fw-bold'>RM " . number_format($row['Price'], 2) . "</p>
-                                    <p class='card-text text-" . ($row['Availability_Status'] == 'Available' ? 'success' : 'danger') . " fw-bold'>" . htmlspecialchars($row['Availability_Status']) . "</p>
-                                    <a href='selectpackage.php?Package_ID=" . $row['Package_ID'] . "' class='btn btn-select'>Select</a>
+                                    <h5 class='card-title'>" . htmlspecialchars($row['package_name']) . "</h5>
+                                    <p class='card-text text-primary fw-bold'>RM " . number_format($row['price'], 2) . "</p>
+                                    <p class='card-text text-" . ($row['status'] == 'Available' ? 'success' : 'danger') . " fw-bold'>" . htmlspecialchars($row['status']) . "</p>
+                                    <a href='selectpackage.php?packageID=" . $row['packageID'] . "' class='btn btn-select'>Select</a>
                                 </div>
                             </div>
                           </div>";
