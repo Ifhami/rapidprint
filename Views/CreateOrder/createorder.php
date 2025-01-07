@@ -26,139 +26,153 @@ if ($result_package->num_rows > 0) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Order</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+        .hero-section {
+            background-color: #f8f9fa;
+            padding: 50px 0;
         }
-        .container {
-            width: 600px;
-            margin: 50px auto;
+
+        .form-container {
+            background-color: #ffffff;
             padding: 30px;
-            background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
+
         .form-group label {
             font-weight: bold;
         }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .form-group input[type="file"] {
-            padding: 5px;
-        }
-        .form-group button {
-            width: 100%;
-            padding: 10px;
+
+        .btn-primary {
             background-color: #3498db;
-            color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
-        .form-group button:hover {
+
+        .btn-primary:hover {
             background-color: #2980b9;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2>Create Order</h2>
+    <?php include '../../public/nav/studentnav.php'; ?> <!-- Include navbar -->
 
-        <!-- Display Package Name and Price -->
-        <div class="form-group">
-            <label>Package Selected: </label>
-            <p><?php echo $package['Package_Name']; ?></p>
-            <label>Price: </label>
-            <p>RM <?php echo number_format($package['Price'], 2); ?></p>
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-5">Create Order</h1>
+            <p class="lead">Fill in the details below to create your order.</p>
         </div>
+    </section>
 
-        <!-- Form to Create Order -->
-        <form method="POST" action="submitorder.php?Package_ID=<?php echo $packageID; ?>" enctype="multipart/form-data">
-            <!-- File Upload -->
-            <div class="form-group">
-                <label for="file">Upload File</label>
-                <input type="file" name="file" required>
+    <!-- Form Section -->
+    <div class="container mt-4 mb-5">
+        <div class="form-container mx-auto">
+            <!-- Display Package Name and Price -->
+            <div class="mb-4">
+                <h5>Package Selected:</h5>
+                <p><?php echo $package['Package_Name']; ?></p>
+                <h5>Price:</h5>
+                <p>RM <?php echo number_format($package['Price'], 2); ?></p>
             </div>
 
-            <!-- Colour Selection -->
-            <div class="form-group">
-                <label for="colour">Colour</label>
-                <select name="colour" required>
-                    <option value="Colour">Colour</option>
-                    <option value="Black and White">Black and White</option>
-                    <option value="Both">Both</option>
-                </select>
-            </div>
-
-            <!-- Total Pages -->
-            <div class="form-group">
-                <label for="total_pages">Total Number of Pages</label>
-                <input type="number" name="total_pages" required>
-            </div>
-
-            <!-- Print Quality -->
-            <div class="form-group">
-                <label for="print_quality">Print Quality</label>
-                <select name="print_quality" required>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                </select>
-            </div>
-
-            <!-- Additional Service -->
-            <div class="form-group">
-                <label>Additional Service</label>
-                <div style="padding-left: 10px;">
-                    <label><input type="radio" name="additional_service" value="Stapler" required> Stapler</label><br>
-                    <label><input type="radio" name="additional_service" value="Binding" required> Binding</label><br>
-                    <label><input type="radio" name="additional_service" value="Laminate" required> Laminate</label>
-                </div>
-            </div>
-
-            <!-- Quantity -->
-            <div class="form-group">
-                <label for="quantity">Quantity</label>
-                <input type="number" name="quantity" required>
-            </div>
-
-            <!-- Remarks -->
-            <div class="form-group">
-                <label for="remarks">Remarks (Special Instruction)</label>
-                <textarea name="remarks"></textarea>
-            </div>
-
-            <!-- Button Container -->
-            <div class="button-container">
-                <!-- Back Button -->
-                <div class="form-group">
-                    <a href="viewpackages.php" class="back-button">
-                        <button type="button">Back to Packages</button>
-                    </a>
+            <!-- Form to Create Order -->
+            <form method="POST" action="submitorder.php?Package_ID=<?php echo $packageID; ?>" enctype="multipart/form-data">
+                <!-- File Upload -->
+                <div class="mb-3">
+                    <label for="file" class="form-label">Upload File</label>
+                    <input type="file" class="form-control" name="file" required>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="form-group">
-                    <button type="submit">Create Order</button>
+                <!-- Colour Selection -->
+                <div class="mb-3">
+                    <label for="colour" class="form-label">Colour</label>
+                    <select class="form-select" name="colour" required>
+                        <option value="Colour">Colour</option>
+                        <option value="Black and White">Black and White</option>
+                        <option value="Both">Both</option>
+                    </select>
                 </div>
-            </div>
 
-        </form>
+                <!-- Total Pages -->
+                <div class="mb-3">
+                    <label for="total_pages" class="form-label">Total Number of Pages</label>
+                    <input type="number" class="form-control" name="total_pages" required>
+                </div>
+
+                <!-- Print Quality -->
+                <div class="mb-3">
+                    <label for="print_quality" class="form-label">Print Quality</label>
+                    <select class="form-select" name="print_quality" required>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+
+                <!-- Additional Service -->
+                <div class="mb-3">
+                    <label class="form-label">Additional Service</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="additional_service" value="Stapler" required>
+                        <label class="form-check-label">Stapler</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="additional_service" value="Binding" required>
+                        <label class="form-check-label">Binding</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="additional_service" value="Laminate" required>
+                        <label class="form-check-label">Laminate</label>
+                    </div>
+                </div>
+
+                <!-- Quantity -->
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" class="form-control" name="quantity" required>
+                </div>
+
+                <!-- Remarks -->
+                <div class="mb-3">
+                    <label for="remarks" class="form-label">Remarks (Special Instruction)</label>
+                    <textarea class="form-control" name="remarks" rows="4"></textarea>
+                </div>
+
+                <!-- Button Container -->
+                <div class="d-flex justify-content-between">
+                    <!-- Back Button -->
+                    <a href="viewpackages.php" class="btn btn-secondary">Back to Packages</a>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Create Order</button>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 MyWebsite. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
