@@ -8,14 +8,14 @@ if (!isset($_SESSION['UserID'])) {
     exit();
 }
 
-// Get Package_ID from URL
-if (isset($_GET['Package_ID'])) {
-    $Package_ID = $_GET['Package_ID'];
+// Get packageID from URL
+if (isset($_GET['packageID'])) {
+    $packageID = $_GET['packageID'];
 
     // Query to get package details based on ID
-    $sql = "SELECT * FROM Package WHERE Package_ID = ?";
+    $sql = "SELECT * FROM Package WHERE packageID = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $Package_ID);
+    $stmt->bind_param("i", $packageID);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -145,26 +145,26 @@ if (isset($_GET['Package_ID'])) {
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h2 class="text-center"><?php echo htmlspecialchars($package['Package_Name']); ?></h2>
-                <p class="text-center"><?php echo htmlspecialchars($package['Package_Detail']); ?></p>
+                <h2 class="text-center"><?php echo htmlspecialchars($package['package_name']); ?></h2>
+                <p class="text-center"><?php echo htmlspecialchars($package['package_detail']); ?></p>
 
                 <div class="price text-center">
-                    <strong>Price:</strong> RM <?php echo number_format($package['Price'], 2); ?>
+                    <strong>price:</strong> RM <?php echo number_format($package['price'], 2); ?>
                 </div>
                 <div class="status text-center">
-                    <strong>Status:</strong> <?php echo $package['Availability_Status']; ?>
+                    <strong>Status:</strong> <?php echo $package['status']; ?>
                 </div>
 
                 <div class="qr-code text-center">
                     <p><strong>QR Code:</strong></p>
-                    <img src="<?php echo htmlspecialchars($package['QR_Code']); ?>" alt="QR Code" width="150" height="150">
+                    <img src="<?php echo htmlspecialchars($package['qr_code']); ?>" alt="QR Code" width="150" height="150">
                 </div>
 
                 <!-- Buttons for "Back to Packages" and "Create Order" -->
                 <div class="buttons">
                     <a href="viewpackages.php" class="back-btn">Back to Packages</a>
-                    <?php if ($package['Availability_Status'] == 'Available'): ?>
-                        <a href="createorder.php?Package_ID=<?php echo $package['Package_ID']; ?>" class="order-btn">Create Order</a>
+                    <?php if ($package['status'] == 'Available'): ?>
+                        <a href="createorder.php?packageID=<?php echo $package['packageID']; ?>" class="order-btn">Create Order</a>
                     <?php endif; ?>
                 </div>
             </div>
