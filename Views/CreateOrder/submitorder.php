@@ -8,11 +8,11 @@ if (!isset($_SESSION['UserID'])) {
     exit;
 }
 
-// Get the selected Package_ID from the URL
-$packageID = isset($_GET['Package_ID']) ? $_GET['Package_ID'] : 0;
+// Get the selected packageID from the URL
+$packageID = isset($_GET['packageID']) ? $_GET['packageID'] : 0;
 
-// Fetch package details based on Package_ID
-$sql_package = "SELECT * FROM Package WHERE Package_ID = $packageID";
+// Fetch package details based on packageID
+$sql_package = "SELECT * FROM Package WHERE packageID = $packageID";
 $result_package = $conn->query($sql_package);
 
 if ($result_package->num_rows > 0) {
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $orderLineID = 'OL' . $orderID_padded;
 
                 // Insert into OrderLine table with the same OrderID and OrderLineID prefixed with 'OL'
-                $sql_orderline = "INSERT INTO `OrderLine` (OrderLine_ID, Order_ID, Package_ID, File, Colour, Print_Quality, Add_Service, Quantity, Total_Cost, Page)
+                $sql_orderline = "INSERT INTO `OrderLine` (OrderLine_ID, Order_ID, packageID, File, Colour, Print_Quality, Add_Service, Quantity, Total_Cost, Page)
                                   VALUES ('$orderLineID', '$orderID_padded', $packageID, '$file_path', '$colour', '$print_quality', '$additional_service', $quantity, $total_cost, $total_pages)";
                 if ($conn->query($sql_orderline) === TRUE) {
                     // Redirect to payment page with the formatted Order_ID
