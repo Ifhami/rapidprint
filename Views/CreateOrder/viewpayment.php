@@ -2,10 +2,10 @@
 session_start();
 include '../../public/includes/db_connect.php';
 
-// Check if the user is logged in
+// Ensure the user is logged in
 if (!isset($_SESSION['UserID'])) {
-    header("Location: login.php"); // Redirect to login page if not logged in
-    exit;
+    header("Location: ../../Views/Login/login.php");
+    exit();
 }
 
 // Get the order ID from the URL
@@ -36,92 +36,105 @@ if ($result_order->num_rows > 0) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Payment Details</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f1f1f1;
+        .hero-section {
+            background-color: #f8f9fa;
+            padding: 50px 0;
         }
-        .container {
-            width: 80%;
-            margin: 50px auto;
-            padding: 40px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #3498db;
-        }
-        .section-title {
-            font-size: 1.2em;
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 10px;
-        }
+
         .details {
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-            padding: 15px;
+            background-color: #ffffff;
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
-        .details p {
-            margin: 5px 0;
-            font-size: 1em;
-            color: #555;
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
-        .details label {
-            font-weight: 600;
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);
         }
+
         .btn-back {
-            display: inline-block;
-            padding: 10px 20px;
             background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            text-align: center;
+            color: #fff;
+            border-radius: 30px;
+            padding: 10px 20px;
+            border: none;
+            transition: background-color 0.3s;
             margin-top: 20px;
-            font-weight: 500;
         }
+
         .btn-back:hover {
             background-color: #2980b9;
         }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 40px;
+        }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2>Payment Details</h2>
-        
-        <!-- Payment Information Section -->
+    <?php include '../../public/nav/studentnav.php'; ?> <!-- Include navbar -->
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-5">Payment Details</h1>
+            <p class="lead">Review the details of your payment and order information below.</p>
+        </div>
+    </section>
+
+    <!-- Payment Details Section -->
+    <div class="container mt-4">
         <div class="details">
-            <div class="section-title">Payment Information</div>
-            <p><label>Payment ID:</label> <?php echo $payment['Payment_ID']; ?></p>
-            <p><label>Payment Method:</label> <?php echo $payment['Payment_Method']; ?></p>
-            <p><label>Payment Date:</label> <?php echo $payment['Payment_Date']; ?></p>
-            <p><label>Payment Status:</label> <?php echo $payment['Pay_Status']; ?></p>
+            <h3>Payment Information</h3>
+            <p><strong>Payment ID:</strong> <?php echo $payment['Payment_ID']; ?></p>
+            <p><strong>Payment Method:</strong> <?php echo $payment['Payment_Method']; ?></p>
+            <p><strong>Payment Date:</strong> <?php echo $payment['Payment_Date']; ?></p>
+            <p><strong>Payment Status:</strong> <span class="text-<?php echo ($payment['Pay_Status'] == 'Completed' ? 'success' : 'danger'); ?>"><?php echo $payment['Pay_Status']; ?></span></p>
         </div>
 
         <!-- Order Information Section -->
         <div class="details">
-            <div class="section-title">Order Information</div>
-            <p><label>Order ID:</label> <?php echo $order['Order_ID']; ?></p>
-            <p><label>Status:</label> <?php echo $order['Status']; ?></p>
-            <p><label>Total Cost:</label> RM <?php echo number_format($order['Ord_Total'], 2); ?></p>
-            <p><label>Remarks:</label> <?php echo $order['Remarks']; ?></p>
+            <h3>Order Information</h3>
+            <p><strong>Order ID:</strong> <?php echo $order['Order_ID']; ?></p>
+            <p><strong>Status:</strong> <?php echo $order['Status']; ?></p>
+            <p><strong>Total Cost:</strong> RM <?php echo number_format($order['Ord_Total'], 2); ?></p>
+            <p><strong>Remarks:</strong> <?php echo $order['Remarks']; ?></p>
         </div>
 
         <!-- Back Button -->
         <a href="historyorders.php" class="btn-back">Back to My Orders</a>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 MyWebsite. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
