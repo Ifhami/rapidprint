@@ -33,7 +33,7 @@ if (isset($_SESSION['role'])) {
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/create-account.php">Create Account</a></li>
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/manage-account.php">Registered User</a></li>
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/branch.php">Manage Branch</a></li>
-                        <li><a class="dropdown-item" href="../../Views/Admin-Module/package-updation.php">Package Updation</a></li>
+                        <li><a class="dropdown-item" href="../../Views/Admin-Module/package.php">Manage Package</a></li>
                         <li><a class="dropdown-item" href="../../Views/Admin-Module/user-dashboard.php">User Dashboard</a></li>
                     </ul>
                 </li>

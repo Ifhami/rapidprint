@@ -1,40 +1,24 @@
 <?php
-header('Content-Type: application/json');
+include '../../public/includes/db_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    include '../../public/includes/db_connect.php';
-
-    $input = json_decode(file_get_contents('php://input'), true);
-    $packageIDs = $input['packageIDs'] ?? []; // Correct variable name here
-
-    if (empty($packageIDs)) {
-        echo json_encode(['message' => 'No Package selected.']);
-        exit;
-    }
-
-    if (isset($conn)) {
-        // Prepare the query to delete packages based on packageID
-        $placeholders = implode(',', array_fill(0, count($packageIDs), '?'));
-        $stmt = $conn->prepare("DELETE FROM package WHERE packageID IN ($placeholders)");
-
-        if ($stmt) {
-            $types = str_repeat('i', count($packageIDs)); // Corrected variable name
-            $stmt->bind_param($types, ...$packageIDs);
-
+    if (isset($_POST['packageID'])) {
+        $packageID = $_POST['packageID']; // Correct variable name here
+        $query = "DELETE FROM package WHERE packageID = ?";
+        
+        if ($stmt = $conn->prepare($query)) {
+            $stmt->bind_param('i', $packageID); // Use the correct variable
             if ($stmt->execute()) {
-                echo json_encode(['message' => 'Packages deleted successfully!']);
+                echo 'Package deleted successfully.';
             } else {
-                echo json_encode(['message' => 'Error executing query: ' . $stmt->error]);
+                echo 'Failed to delete package.';
             }
-
             $stmt->close();
         } else {
-            echo json_encode(['message' => 'Failed to prepare statement: ' . $conn->error]);
+            echo 'Failed to prepare statement.';
         }
-
-        $conn->close();
     } else {
-        echo json_encode(['message' => 'Database connection error.']);
+        echo 'Package ID not provided.';
     }
 }
 ?>
