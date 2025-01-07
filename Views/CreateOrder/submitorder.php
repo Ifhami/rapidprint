@@ -31,7 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $colour = $_POST['colour'];
     $total_pages = $_POST['total_pages'];
     $print_quality = $_POST['print_quality'];
+    
+    // Validate the additional service input
+    $valid_services = ['Stapler', 'Binding', 'Laminate'];
     $additional_service = isset($_POST['additional_service']) ? $_POST['additional_service'] : '';
+    
+    // Ensure only valid services are stored
+    if (!in_array($additional_service, $valid_services)) {
+        $additional_service = ''; // Set to empty string if invalid
+    }
+
     $quantity = $_POST['quantity'];
     $remarks = $_POST['remarks'];
 
@@ -54,18 +63,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Insert into Order table
             $sql_order = "INSERT INTO `Order` (CustomerID, Staff_ID, Status, Order_Date, Ord_Tax, Points_Earned, Ord_Total, Remarks)
-                          VALUES (?, 0, 'Pending', NOW(), ?, ?, ?, ?)";
+                          VALUES (?, Null, 'Pending', NOW(), ?, ?, ?, ?)";
             $stmt_order = $conn->prepare($sql_order);
             $stmt_order->bind_param("iddds", $userID, $ord_tax, $points_earned, $ord_total, $remarks);
 
             if ($stmt_order->execute()) {
                 $orderID = $conn->insert_id; // Get the last inserted Order_ID
 
-                // Insert into OrderLine table
+                // Insert into OrderLine table with VARCHAR for Add_Service
                 $sql_orderline = "INSERT INTO `OrderLine` (Order_ID, packageID, File, Colour, Print_Quality, Add_Service, Quantity, Total_Cost, Page)
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt_orderline = $conn->prepare($sql_orderline);
-                $stmt_orderline->bind_param("iisssiddi", $orderID, $packageID, $file_path, $colour, $print_quality, $additional_service, $quantity, $total_cost, $total_pages);
+                $stmt_orderline->bind_param("iissssdsd", $orderID, $packageID, $file_path, $colour, $print_quality, $additional_service, $quantity, $total_cost, $total_pages);
 
                 if ($stmt_orderline->execute()) {
                     header("Location: payment.php?orderID=" . str_pad($orderID, 6, '0', STR_PAD_LEFT));
