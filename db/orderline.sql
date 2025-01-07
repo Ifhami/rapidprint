@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `orderline` (
   `OrderLine_ID` int(11) NOT NULL,
   `Order_ID` int(11) NOT NULL,
-  `Package_ID` int(11) NOT NULL,
+  `packageID` int(11) NOT NULL,
   `File` varchar(255) DEFAULT NULL,
   `Colour` varchar(50) DEFAULT NULL,
   `Print_Quality` varchar(50) DEFAULT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `orderline` (
 -- Dumping data for table `orderline`
 --
 
-INSERT INTO `orderline` (`OrderLine_ID`, `Order_ID`, `Package_ID`, `File`, `Colour`, `Print_Quality`, `Add_Service`, `Quantity`, `Total_Cost`, `Page`) VALUES
+INSERT INTO `orderline` (`OrderLine_ID`, `Order_ID`, `packageID`, `File`, `Colour`, `Print_Quality`, `Add_Service`, `Quantity`, `Total_Cost`, `Page`) VALUES
 (7, 13, 5, 'uploads/ASSIGNMENT 3 - Rubric_SEMI20242025.pdf', 'Colour', 'Low', 'Stapler', 1, 1.50, 12);
 
 --
@@ -56,7 +56,7 @@ INSERT INTO `orderline` (`OrderLine_ID`, `Order_ID`, `Package_ID`, `File`, `Colo
 --
 ALTER TABLE `orderline`
   ADD PRIMARY KEY (`OrderLine_ID`),
-  ADD UNIQUE KEY `Order_ID` (`Order_ID`,`Package_ID`);
+  ADD UNIQUE KEY `Order_ID` (`Order_ID`,`packageID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
