@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['branchID'])) {
     $result = mysqli_query($conn, $query);
 
     if ($result) {
-        echo "<script type='text/javascript'>alert('Branch updated successfully!'); window.location='testing.php';</script>";
+        echo "<script type='text/javascript'>alert('Branch updated successfully!'); window.location='branch.php';</script>";
         exit;
     } else {
         echo "Error updating branch: " . mysqli_error($conn);
