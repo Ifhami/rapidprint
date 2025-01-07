@@ -192,10 +192,12 @@ if ($result->num_rows > 0) {
                                             <?php if ($timeDifference <= 3600): ?>
                                                 <a href="modify_order.php?orderID=<?php echo $order['Order_ID']; ?>" class="btn btn-modify">Modify Order</a>
                                             <?php endif; ?>
+                                            
                                             <!-- Cancel button -->
                                             <?php if ($timeDifference <= 3600): ?>
                                                 <a href="cancel_order.php?orderID=<?php echo $order['Order_ID']; ?>" class="btn btn-cancel">Cancel Order</a>
                                             <?php endif; ?>
+                                            
                                             <!-- Payment button -->
                                             <a href="payment.php?orderID=<?php echo $order['Order_ID']; ?>" class="btn btn-payment">Proceed to Payment</a>
                                         </div>
