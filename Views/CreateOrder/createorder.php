@@ -125,19 +125,23 @@ if ($result_package->num_rows > 0) {
                     </select>
                 </div>
 
-                <!-- Additional Service -->
+                <<!-- Additional Service -->
                 <div class="mb-3">
                     <label class="form-label">Additional Service</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="additional_service" value="Stapler" required>
+                        <input class="form-check-input" type="radio" name="additional_service" value="None" required>
+                        <label class="form-check-label">None</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="additional_service" value="Stapler">
                         <label class="form-check-label">Stapler</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="additional_service" value="Binding" required>
+                        <input class="form-check-input" type="radio" name="additional_service" value="Binding">
                         <label class="form-check-label">Binding</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="additional_service" value="Laminate" required>
+                        <input class="form-check-input" type="radio" name="additional_service" value="Laminate">
                         <label class="form-check-label">Laminate</label>
                     </div>
                 </div>
