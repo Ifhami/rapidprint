@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2025 at 03:02 AM
+-- Generation Time: Jan 07, 2025 at 03:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,8 +45,9 @@ INSERT INTO `package` (`packageID`, `branchID`, `package_name`, `package_detail`
 (4, 6, 'Basic Package', 'Black & White, One Sided', 0.50, 'Available', 'qrcodes/basic.png'),
 (5, 6, 'Premium Package', 'Color, Two Sided', 1.50, 'Available', 'qrcodes/premium.png'),
 (6, 6, 'Standard Package', 'Color, One Sided', 1.00, 'Available', 'qrcodes/standard.png'),
-(7, 6, 'Normal Package', 'Black & White, One Sided', 0.20, 'Available', 'qrcodes/normal.png')
+(7, 6, 'Normal Package', 'Black & White, One Sided', 0.20, 'Available', 'qrcodes/normal.png'),
 (16, 15, 'Gold', 'All,  All', 2.00, 'Available', 'qrcodes/gold.png');
+
 --
 -- Indexes for dumped tables
 --
@@ -66,17 +67,7 @@ ALTER TABLE `package`
 -- AUTO_INCREMENT for table `package`
 --
 ALTER TABLE `package`
-  MODIFY `packageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `package`
---
-ALTER TABLE `package`
-  ADD CONSTRAINT `package_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `branch` (`branchID`) ON DELETE CASCADE;
+  MODIFY `packageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
