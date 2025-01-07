@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Move uploaded file to the desired directory
         if (move_uploaded_file($file_tmp_name, $file_path)) {
             // Calculate the total cost based on quantity and package price
-            $total_cost = $package['Price'] * $quantity;
+            $total_cost = $package['price'] * $quantity;
 
             // Calculate Ord_Tax as 3% of Total_Cost
             $ord_tax = $total_cost * 0.03;
