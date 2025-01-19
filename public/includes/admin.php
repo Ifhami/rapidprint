@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 if ($_SESSION['role'] != 'admin') {
     echo "<script>
             alert('You do not have permission to access this page.');
