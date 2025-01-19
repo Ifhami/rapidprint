@@ -155,12 +155,7 @@ $orderlines = $result_orderline->fetch_all(MYSQLI_ASSOC);
                         <input type="radio" name="payment_method" value="Cash" required> Cash
                     </label><br>
                     <label>
-                        <input type="radio" name="payment_method" value="Membership Balance" required> Membership Balance
-                    </label><br>
-                    <label>
-                        <input type="radio" name="payment_method" value="Membership Points" required> 
-                        Membership Points 
-                        <span>(Required: <?php echo $order['Ord_Total']; ?> points)</span>
+                        <input type="radio" name="payment_method" value="Membership_Card" required> Membership card
                     </label>
                 </div>
             </div>
