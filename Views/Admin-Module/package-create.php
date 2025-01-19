@@ -1,3 +1,8 @@
+<!--  
+MODULE 1
+nurhamira bitni mohamad darzi 
+CD20007
+-->
 <?php
 /* Model 1 - Package */
 // Include the database connection file and start session

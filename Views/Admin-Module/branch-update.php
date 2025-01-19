@@ -1,3 +1,8 @@
+<!--  
+MODULE 1
+nurhamira bitni mohamad darzi 
+CD20007
+-->
 <?php
 /* Model 1 - Branch */
 // Include the database connection file
