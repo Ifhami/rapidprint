@@ -4,7 +4,6 @@
 include '../../public/includes/db_connect.php';
 include '../../public/includes/admin.php';
 
-session_start();
 $userID = $_SESSION['UserID']; // Ensure this session variable is set correctly
 //handle post request
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
